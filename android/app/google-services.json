@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "395502331568",
+    "firebase_url": "https://setiu-wetlands-tour-booking.firebaseio.com",
+    "project_id": "setiu-wetlands-tour-booking",
+    "storage_bucket": "setiu-wetlands-tour-booking.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:395502331568:android:da5c75738b83a75913bd75",
+        "android_client_info": {
+          "package_name": "com.example.setiuwetlandstourbooking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "395502331568-oav5t7pkkme3sj2b6n5s5beqf1j9nnbe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.setiuwetlandstourbooking",
+            "certificate_hash": "100df0a5d1027aacc43e4e38cce0b8e3cdc58d0e"
+          }
+        },
+        {
+          "client_id": "395502331568-3v5mr4bqt8r13mt8uim4uadfhrp54l6b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPzGXfY7D0FfFnjr3cEz1PZ3Rtwbz2T14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "395502331568-3v5mr4bqt8r13mt8uim4uadfhrp54l6b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
