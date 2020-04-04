@@ -14,9 +14,11 @@ class EditResortPage extends StatefulWidget {
   }) : super(key: key);
   final Database database;
   final Resort resort;
-  static Future<void> show(BuildContext context,
-      {Resort resort}) async {
-    final database = Provider.of<Database>(context);
+  static Future<void> show(
+    BuildContext context, {
+    Database database,
+    Resort resort,
+  }) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) =>
@@ -33,17 +35,17 @@ class EditResortPage extends StatefulWidget {
 class _EditResortPageState extends State<EditResortPage> {
   final _formKey = GlobalKey<FormState>();
 
+  String _resortName;
+  String _resortDescription;
+  String _resortAddress;
+//  int _resortTel;
+  String _resortTel;
+  String _resortType;
 
-   String _resortName;
-   String _resortDescription;
-   String _resortAddress;
-   int _resortTel;
-   String _resortType;
   @override
   void initState() {
     super.initState();
     if (widget.resort != null) {
-
       _resortName = widget.resort.resortName;
       _resortDescription = widget.resort.resortDescription;
       _resortAddress = widget.resort.resortAddress;
@@ -68,7 +70,7 @@ class _EditResortPageState extends State<EditResortPage> {
       try {
         final resorts = await widget.database.resortsStream().first;
         final allResortsNames =
-        resorts.map((resort) => resort.resortName).toList();
+            resorts.map((resort) => resort.resortName).toList();
         if (widget.resort != null) {
           allResortsNames.remove(widget.resort.resortName);
         }
@@ -82,12 +84,13 @@ class _EditResortPageState extends State<EditResortPage> {
           final resortId =
               widget.resort?.resortId ?? documentIdFromCurrentDate();
           final resort = Resort(
-              resortId: resortId,
-              resortName: _resortName,
-              resortDescription: _resortDescription,
-              resortAddress: _resortAddress,
-              resortTel: _resortTel,
-              resortType: _resortType,
+            resortId: resortId,
+            resortName: _resortName,
+            resortDescription: _resortDescription,
+            resortAddress: _resortAddress,
+            resortTel: _resortTel,
+            resortType: _resortType,
+
           );
           await widget.database.setResort(resort);
           Navigator.of(context).pop();
@@ -106,9 +109,7 @@ class _EditResortPageState extends State<EditResortPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text(widget.resort == null
-            ? 'New Resort'
-            : 'Edit Resort'),
+        title: Text(widget.resort == null ? 'New Resort' : 'Edit Resort'),
         actions: <Widget>[
           FlatButton(
             child: Text(
@@ -160,22 +161,30 @@ class _EditResortPageState extends State<EditResortPage> {
         decoration: InputDecoration(labelText: 'Resort Description'),
         initialValue: _resortDescription,
         onSaved: (value) => _resortDescription = value,
-        validator: (value) => value.isNotEmpty ? null : 'Description cant\'t be empty',
+        validator: (value) =>
+            value.isNotEmpty ? null : 'Description cant\'t be empty',
       ),
-    TextFormField(
-    decoration: InputDecoration(labelText: 'Resort Address'),
-    initialValue: _resortAddress,
-    onSaved: (value) => _resortAddress = value,
-    validator: (value) => value.isNotEmpty ? null : 'Address cant\'t be empty',
-    ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Resort Telephone No'),
-        initialValue: _resortTel != null ? '$_resortTel' : null,
-        keyboardType: TextInputType.numberWithOptions(
-          signed: false,
-          decimal: false,
-        ),
-        onSaved: (value) => _resortTel = int.tryParse(value) ?? 0,
+        decoration: InputDecoration(labelText: 'Resort Address'),
+        initialValue: _resortAddress,
+        onSaved: (value) => _resortAddress = value,
+        validator: (value) =>
+            value.isNotEmpty ? null : 'Address cant\'t be empty',
+      ),
+//      TextFormField(
+//        decoration: InputDecoration(labelText: 'Resort Telephone No'),
+//        initialValue: _resortTel != null ? '$_resortTel' : null,
+//        keyboardType: TextInputType.numberWithOptions(
+//          signed: false,
+//          decimal: false,
+//        ),
+//        onSaved: (value) => _resortTel = int.tryParse(value) ?? 0,
+//      ),
+      TextFormField(
+        decoration: InputDecoration(labelText: 'Resort Telephone'),
+        initialValue: _resortTel,
+        onSaved: (value) => _resortTel = value,
+        validator: (value) => value.isNotEmpty ? null : 'Type cant\'t be empty',
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'Resort Type'),

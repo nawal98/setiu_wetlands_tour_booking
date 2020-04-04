@@ -8,14 +8,16 @@ class Resort{
         @required this.resortAddress,
         @required this.resortTel,
         @required this.resortType,
+
         });
 
   final String resortId;
   final String resortName;
   final String resortDescription;
   final String resortAddress;
-  final int resortTel;
+  final String resortTel;
   final String resortType;
+
 
 
   factory Resort.fromMap(Map<String, dynamic> data, String documentId) {
@@ -25,8 +27,9 @@ class Resort{
     final String resortName = data['resortName'];
     final String resortDescription = data['resortDescription'];
     final String resortAddress = data['resortAddress'];
-    final int resortTel = data['resortTel'];
+    final String resortTel = data['resortTel'];
     final String resortType = data['resortType'];
+
 
     return Resort(
       resortId: documentId,
@@ -35,6 +38,7 @@ class Resort{
       resortAddress: resortAddress,
       resortTel: resortTel,
       resortType: resortType,
+
 
     );
   }
@@ -46,6 +50,7 @@ class Resort{
       'resortAddress': resortAddress,
       'resortTel': resortTel,
       'resortType': resortType,
+
 
     };
   }

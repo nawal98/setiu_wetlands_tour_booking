@@ -6,6 +6,7 @@ import 'package:setiuwetlandstourbooking/app/home/tour_packages/tour_package_adm
 import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dart';
 import 'dart:async';
 import 'package:setiuwetlandstourbooking/services/database.dart';
+
 class Homepage extends StatelessWidget {
   List<String> events = ["Tour Package", "Tour Activity", "Resort", "Staff"];
 
@@ -43,60 +44,91 @@ class Homepage extends StatelessWidget {
 //            create: (_) => FirestoreDatabase(cust_id: customers.cust_id),
 //            child: TourPackageAdmin(),);
 //        } else {
-          return Scaffold(
-            appBar: AppBar(
-              elevation: 2.0,
-              title: Text('Setiu Wetlands '),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(
-                    'Logout',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  onPressed: () => _confirmSignOut(context),
+    return Scaffold(
+        appBar: AppBar(
+          elevation: 2.0,
+          title: Text('Setiu Wetlands '),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Logout',
+                style: TextStyle(
+                  fontSize: 18.0,
                 ),
-              ],
+              ),
+              onPressed: () => _confirmSignOut(context),
             ),
-            backgroundColor: Colors.grey[200],
-            body: Container(
-                child: ButtonTheme(
-                  minWidth: 150.0,
-                  height: 120.0,
-                  child: Container(
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
+          ],
+        ),
+        backgroundColor: Colors.grey[200],
+        body: Container(
+          child: ButtonTheme(
+              minWidth: 150.0,
+              height: 120.0,
+              child: Container(
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                    Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          RaisedButton(
+                            child: Text('Tour Package'),
+                            color: Colors.lightGreen,
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TourPackageAdmin(),
+                                  ));
+                            },
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                            width: 8.0,
+                          ),
+                        RaisedButton(
+                          child: Text('Tour Activity'),
+                          color: Colors.lightGreen,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TourPackageAdmin(),
+                                ));
+                          },
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                          width: 8.0,
+                        ),
 
-                        child:
-                        Row(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-
                             RaisedButton(
-
-                              child: Text('Tour Activity'),
+                              child: Text('Staff'),
                               color: Colors.lightGreen,
-
                               onPressed: () {
                                 Navigator.push(
-
                                     context,
                                     MaterialPageRoute(
-                                    builder: (context) => TourPackageAdmin(),
-
+                                      builder: (context) => TourPackageAdmin(),
                                     ));
                               },
-
                             ),
                             SizedBox(
                               height: 8.0,
                               width: 8.0,
                             ),
-
                             RaisedButton(
-                              child: Text('Tour Package'),
+                              child: Text('Resort'),
                               color: Colors.lightGreen,
                               onPressed: () {
                                 Navigator.push(
@@ -111,54 +143,51 @@ class Homepage extends StatelessWidget {
                               width: 8.0,
                             ),
                           ],
-
-
                         ),
-
-                      ),
+                      ],
                     ),
-                  ),
-                )),
-          );
-        }
-
+                 ] ),
+                ]),
+              )),
+        ))));
   }
+}
 
-  Column getCardbyTitle(String title) {
-    String img = "";
-    if (title == "Tour Package")
-      img = 'images/tour_package.png';
-    else if (title == "Tour Activity")
-      img = 'images/tour_activity.png';
-    else if (title == "Resort")
-      img = 'images/resort.png';
-    else
-      img = 'images/staff.png';
+Column getCardbyTitle(String title) {
+  String img = "";
+  if (title == "Tour Package")
+    img = 'images/tour_package.png';
+  else if (title == "Tour Activity")
+    img = 'images/tour_activity.png';
+  else if (title == "Resort")
+    img = 'images/resort.png';
+  else
+    img = 'images/staff.png';
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        new Center(
-          child: Container(
-            child: new Stack(
-              children: <Widget>[
-                new Image.asset(
-                  img,
-                  width: 80.0,
-                  height: 80.0,
-                )
-              ],
-            ),
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      new Center(
+        child: Container(
+          child: new Stack(
+            children: <Widget>[
+              new Image.asset(
+                img,
+                width: 80.0,
+                height: 80.0,
+              )
+            ],
           ),
         ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
-          textAlign: TextAlign.center,
-        )
-      ],
-    );
-  }
+      ),
+      Text(
+        title,
+        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
+        textAlign: TextAlign.center,
+      )
+    ],
+  );
+}
 
 //final auth = Provider.of<AuthBase>(context);
 //return StreamBuilder<Customer>(

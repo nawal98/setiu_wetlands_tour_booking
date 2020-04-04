@@ -33,12 +33,12 @@ class EditTourPackagePage extends StatefulWidget {
 class _EditTourPackagePageState extends State<EditTourPackagePage> {
   final _formKey = GlobalKey<FormState>();
   String _tourName;
-  int _durationPerHour;
+  String _durationPerHour;
   String _tourDescription;
-  int _tourAdultAmount;
+  String _tourAdultAmount;
   int _tourChildAmount;
   int _tourInfantAmount;
-  int _tourDiscount;
+  String _tourDiscount;
 
   @override
   void initState() {
@@ -166,23 +166,35 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
             value.isNotEmpty ? null : 'Description cant\'t be empty',
       ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Duration Per Hour'),
-        initialValue: _durationPerHour != null ? '$_durationPerHour' : null,
-        keyboardType: TextInputType.numberWithOptions(
-          signed: false,
-          decimal: false,
-        ),
-        onSaved: (value) => _durationPerHour = int.tryParse(value) ?? 0,
+        decoration: InputDecoration(labelText: 'Tour Package Name'),
+        initialValue: _durationPerHour,
+        onSaved: (value) => _durationPerHour = value,
+        validator: (value) => value.isNotEmpty ? null : 'Name cant\'t be empty',
       ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Adult Price(RM)'),
-        initialValue: _tourAdultAmount != null ? '$_tourAdultAmount' : null,
-        keyboardType: TextInputType.numberWithOptions(
-          signed: false,
-          decimal: false,
-        ),
-        onSaved: (value) => _tourAdultAmount = int.tryParse(value) ?? 0,
+        decoration: InputDecoration(labelText: 'Tour Package Name'),
+        initialValue: _tourAdultAmount,
+        onSaved: (value) => _tourAdultAmount = value,
+        validator: (value) => value.isNotEmpty ? null : 'Name cant\'t be empty',
       ),
+//      TextFormField(
+//        decoration: InputDecoration(labelText: 'Duration Per Hour'),
+//        initialValue: _durationPerHour != null ? '$_durationPerHour' : null,
+//        keyboardType: TextInputType.numberWithOptions(
+//          signed: false,
+//          decimal: false,
+//        ),
+//        onSaved: (value) => _durationPerHour = int.tryParse(value) ?? 0,
+//      ),
+//      TextFormField(
+//        decoration: InputDecoration(labelText: 'Adult Price(RM)'),
+//        initialValue: _tourAdultAmount != null ? '$_tourAdultAmount' : null,
+//        keyboardType: TextInputType.numberWithOptions(
+//          signed: false,
+//          decimal: false,
+//        ),
+//        onSaved: (value) => _tourAdultAmount = int.tryParse(value) ?? 0,
+//      ),
       TextFormField(
         decoration: InputDecoration(labelText: 'Child Price(RM)'),
         initialValue: _tourChildAmount != null ? '$_tourChildAmount' : null,
@@ -202,14 +214,20 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
         onSaved: (value) => _tourInfantAmount = int.tryParse(value) ?? 0,
       ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Discount(%)'),
-        initialValue: _tourDiscount != null ? '$_tourDiscount' : null,
-        keyboardType: TextInputType.numberWithOptions(
-          signed: false,
-          decimal: false,
-        ),
-        onSaved: (value) => _tourDiscount = int.tryParse(value) ?? 0,
+        decoration: InputDecoration(labelText: 'Tour Package Name'),
+        initialValue: _tourDiscount,
+        onSaved: (value) => _tourDiscount = value,
+        validator: (value) => value.isNotEmpty ? null : 'Name cant\'t be empty',
       ),
+//      TextFormField(
+//        decoration: InputDecoration(labelText: 'Discount(%)'),
+//        initialValue: _tourDiscount != null ? '$_tourDiscount' : null,
+//        keyboardType: TextInputType.numberWithOptions(
+//          signed: false,
+//          decimal: false,
+//        ),
+//        onSaved: (value) => _tourDiscount = int.tryParse(value) ?? 0,
+//      ),
     ];
   }
 }

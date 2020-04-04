@@ -10,10 +10,57 @@ class TourPackageListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(tourPackage.tourName),
-      trailing: Icon(Icons.chevron_right),
+    return InkWell(
       onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: _buildContents(context),
+            ),
+            Icon(Icons.chevron_right, color: Colors.black),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContents(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+            children: <Widget>[
+              Text(tourPackage.tourName,
+                  style: TextStyle(fontSize: 18.0, color: Colors.black87)),
+            ]),
+        Row(children: <Widget>[
+          Text(tourPackage.tourDescription, style: TextStyle(fontSize: 16.0)),
+        ]),
+        Row(children: <Widget>[
+          Text('RM '+
+            tourPackage.tourAdultAmount + 'per Adult',
+            style: TextStyle(fontSize: 16.0, color: Colors.grey),
+          ),
+        ],
+        ),
+        Row(children: <Widget>[
+          Text(
+            tourPackage.durationPerHour+'hours',
+            style: TextStyle(fontSize: 16.0, color: Colors.black54),
+          ),
+        ],
+        ),
+        Row(children: <Widget>[
+          Text(
+            tourPackage.tourDiscount +'% Discount',
+            style: TextStyle(fontSize: 16.0, color: Colors.green),
+          ),
+        ],
+        ),
+
+      ],
     );
   }
 }
