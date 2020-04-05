@@ -7,7 +7,7 @@ import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dar
 import 'dart:async';
 import 'package:setiuwetlandstourbooking/services/database.dart';
 
-class Homepage extends StatelessWidget {
+class HomePage extends StatelessWidget {
   List<String> events = ["Tour Package", "Tour Activity", "Resort", "Staff"];
 
   Future<void> _signOut(BuildContext context) async {
