@@ -22,7 +22,7 @@ class ResortRoomsPage extends StatelessWidget {
   static Future<void> show(BuildContext context, Resort resort) async {
     final Database database = Provider.of<Database>(context);
     await Navigator.of(context).push(
-      MaterialPageRoute(
+      CupertinoPageRoute(
         fullscreenDialog: false,//back button
         builder: (context) =>
             ResortRoomsPage(database: database, resort: resort),
@@ -52,23 +52,23 @@ class ResortRoomsPage extends StatelessWidget {
           appBar: AppBar(
             elevation: 2.0,
             title: Text(resortName),
+            centerTitle: true,
             actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  'Edit',
-                  style: TextStyle(fontSize: 18.0, color: Colors.black),
-                ),
+              IconButton(
+                icon:Icon(Icons.edit,color: Colors.black),
+
                 onPressed: () => EditResortPage.show(context,
                     database: database, resort: resort),
               ),
+              IconButton(
+                icon:Icon(Icons.add,color: Colors.black),
+                onPressed: () =>
+                    RoomPage.show(context: context, database: database, resort: resort),
+              ),
             ],
+
           ),
           body: _buildContent(context, resort),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () =>
-                RoomPage.show(context: context, database: database, resort: resort),
-          ),
         );
       }
     );
