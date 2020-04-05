@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:setiuwetlandstourbooking/app/models/tour_activity.dart';
@@ -18,7 +19,7 @@ class EditTourActivityPage extends StatefulWidget {
       {TourActivity tourActivity}) async {
     final database = Provider.of<Database>(context);
     await Navigator.of(context).push(
-      MaterialPageRoute(
+      CupertinoPageRoute(
         builder: (context) =>
             EditTourActivityPage(database: database, tourActivity: tourActivity),
         fullscreenDialog: true,
