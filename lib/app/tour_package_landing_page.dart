@@ -22,7 +22,7 @@ class LandingPage extends StatelessWidget {
           }
           return Provider<Database>(
             create: (_) => FirestoreDatabase(uid: user.uid),
-            child: Homepage(),);
+            child: HomePage(),);
         } else {
           return Scaffold(
             body: Center(
