@@ -12,6 +12,7 @@ import 'package:setiuwetlandstourbooking/services/database.dart';
 import 'package:setiuwetlandstourbooking/services/auth.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dart';
+
 class ResortAdmin extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
     try {
@@ -22,39 +23,26 @@ class ResortAdmin extends StatelessWidget {
     }
   }
 
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSignOut = await PlatformAlertDialog(
-      title: 'Logout',
-      content: 'Are you sure that you want to logout?',
-      cancelActionText: 'Cancel',
-      defaultActionText: 'Logout',
-    ).show(context);
-    if (didRequestSignOut == true) {
-      _signOut(context);
-    }
-  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("List of Resort"),
         actions: <Widget>[
-          FlatButton(
-            child: Text(
-              'Logout',
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
+          IconButton(
+            icon: Icon(Icons.add, color: Colors.black),
+            onPressed: () => EditResortPage.show(
+              context,
+              database: Provider.of<Database>(context),
             ),
-            onPressed: () => _confirmSignOut(context),
           ),
+         
         ],
       ),
       body: _buildContents(context),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => EditResortPage.show(context, database: Provider.of<Database>(context),),
-      ),
+
     );
   }
 
@@ -95,8 +83,7 @@ class ResortAdmin extends StatelessWidget {
             onDismissed: (direction) => _delete(context, resort),
             child: ResortListTile(
               resort: resort,
-              onTap: () =>
-                  ResortRoomsPage.show(context,  resort),
+              onTap: () => ResortRoomsPage.show(context, resort),
             ),
           ),
         );
