@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:setiuwetlandstourbooking/app/models/resort.dart';
@@ -20,7 +21,7 @@ class EditResortPage extends StatefulWidget {
     Resort resort,
   }) async {
     await Navigator.of(context).push(
-      MaterialPageRoute(
+      CupertinoPageRoute(
         builder: (context) =>
             EditResortPage(database: database, resort: resort),
         fullscreenDialog: true,
