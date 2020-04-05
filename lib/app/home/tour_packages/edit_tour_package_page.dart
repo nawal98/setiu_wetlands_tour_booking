@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:setiuwetlandstourbooking/app/models/tour_package.dart';
@@ -15,10 +16,10 @@ class EditTourPackagePage extends StatefulWidget {
   final Database database;
   final TourPackage tourPackage;
   static Future<void> show(BuildContext context,
-      {TourPackage tourPackage}) async {
+      {TourPackage tourPackage, Database database}) async {
     final database = Provider.of<Database>(context);
-    await Navigator.of(context).push(
-      MaterialPageRoute(
+    await Navigator.of(context, rootNavigator: true).push(
+      CupertinoPageRoute(
         builder: (context) =>
             EditTourPackagePage(database: database, tourPackage: tourPackage),
         fullscreenDialog: true,
