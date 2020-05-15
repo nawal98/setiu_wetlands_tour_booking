@@ -1,63 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:setiuwetlandstourbooking/app/home/resort_rooms/resort_rooms_page.dart';
-import 'package:setiuwetlandstourbooking/app/home/resorts/edit_resort_page.dart';
+import 'package:setiuwetlandstourbooking/app/home/account/edit_customer_page.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/empty_content.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/list_item_builder.dart';
-import 'package:setiuwetlandstourbooking/app/home/resorts/resort_list_tile.dart';
-import 'package:setiuwetlandstourbooking/app/models/resort.dart';
+import 'package:setiuwetlandstourbooking/app/home/account/account_list_tile_operator.dart';
+import 'package:setiuwetlandstourbooking/app/models/user_info.dart';
 import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
 import 'package:setiuwetlandstourbooking/services/database.dart';
 import 'package:setiuwetlandstourbooking/services/auth.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dart';
-import 'package:setiuwetlandstourbooking/app/home/navigationDrawer.dart';
-class ResortAdmin extends StatelessWidget {
 
-  static const String routeName = '/resort';
-  Future<void> _signOut(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthBase>(context);
-      await auth.signOut();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-
+class AccountPageOperator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("List of Resort"),
+        title: Text("List of Customers"),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add, color: Colors.black),
-            onPressed: () => EditResortPage.show(
-              context,
-              database: Provider.of<Database>(context),
-            ),
-          ),
-
+//          IconButton(
+//            icon: Icon(Icons.add, color: Colors.black),
+//            onPressed: () => EditCustomerPage.show(
+//              context, database: Provider.of<Database>(context),
+//            ),
+//          ),
         ],
       ),
-
       body: _buildContents(context),
-
     );
   }
 
   Widget _buildContents(BuildContext context) {
     final database = Provider.of<Database>(context);
-    return StreamBuilder<List<Resort>>(
-      stream: database.resortsStream(),
+    return StreamBuilder<List<UserInfo>>(
+      stream: database.userInfosStream(),
       builder: (context, snapshot) {
-        return ListItemBuilder<Resort>(
+        return ListItemBuilder<UserInfo>(
           snapshot: snapshot,
-          itemBuilder: (context, resort) => Dismissible(
-            key: Key('resort-${resort.resortId}'),
+          itemBuilder: (context, userInfo) => Dismissible(
+            key: Key('userInfo-${userInfo.userId}'),
             background: Container(
               color: Colors.red,
             ),
@@ -69,7 +52,7 @@ class ResortAdmin extends StatelessWidget {
                   return AlertDialog(
                     title: const Text("Confirm Delete"),
                     content: const Text(
-                        "Are you sure you wish to delete this resort?"),
+                        "Are you sure you wish to delete this customer?"),
                     actions: <Widget>[
                       FlatButton(
                           onPressed: () => Navigator.of(context).pop(true),
@@ -83,10 +66,11 @@ class ResortAdmin extends StatelessWidget {
                 },
               );
             },
-            onDismissed: (direction) => _delete(context, resort),
-            child: ResortListTile(
-              resort: resort,
-              onTap: () => ResortRoomsPage.show(context, resort),
+            onDismissed: (direction) => _delete(context, userInfo),
+            child: AccountListTileOperator(
+              userInfo: userInfo,
+//              onTap: () =>
+//                  EditCustomerPage.show(context, userInfo: userInfo),
             ),
           ),
         );
@@ -94,10 +78,10 @@ class ResortAdmin extends StatelessWidget {
     );
   }
 
-  Future<void> _delete(BuildContext context, Resort resort) async {
+  Future<void> _delete(BuildContext context, UserInfo userInfo) async {
     try {
       final database = Provider.of<Database>(context);
-      await database.deleteResort(resort);
+      await database.deleteAccount(userInfo);
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
         title: 'Operation failed',

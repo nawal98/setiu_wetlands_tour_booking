@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:setiuwetlandstourbooking/app/models/tour_package.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/PackageDetail.dart';
-class TourPackageListTile extends StatelessWidget {
-  const TourPackageListTile({Key key, @required this.tourPackage, this.onTap}):super(key:key);
+import 'package:setiuwetlandstourbooking/app/home/pageRoute.dart';
+class TourPackageCustomerListTile extends StatelessWidget {
+  const TourPackageCustomerListTile({Key key, @required this.tourPackage, this.onTap}):super(key:key);
   final TourPackage tourPackage;
   final VoidCallback onTap;
-
 
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap:(){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PackageDetail(),
+            // Pass the arguments as part of the RouteSettings. The
+            // DetailScreen reads the arguments from these settings.
+            settings: RouteSettings(
+              arguments: tourPackage,),),);
+      },
+
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Row(

@@ -65,7 +65,7 @@ class ResortRoomsPage extends StatelessWidget {
                 onPressed: () =>
                     RoomPage.show(context: context, database: database, resort: resort),
               ),
-            ],
+           ],
 
           ),
           body: _buildContent(context, resort),

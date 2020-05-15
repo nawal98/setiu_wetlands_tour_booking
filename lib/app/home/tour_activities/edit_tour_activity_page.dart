@@ -6,6 +6,10 @@ import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dar
 import 'package:setiuwetlandstourbooking/services/database.dart';
 import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
+import 'package:image_picker/image_picker.dart'; // For Image Picker
+import 'package:path/path.dart' as Path;
 
 class EditTourActivityPage extends StatefulWidget {
   const EditTourActivityPage({
@@ -16,12 +20,12 @@ class EditTourActivityPage extends StatefulWidget {
   final Database database;
   final TourActivity tourActivity;
   static Future<void> show(BuildContext context,
-      {TourActivity tourActivity}) async {
+      {TourActivity tourActivity, Database database}) async {
     final database = Provider.of<Database>(context);
     await Navigator.of(context).push(
       CupertinoPageRoute(
-        builder: (context) =>
-            EditTourActivityPage(database: database, tourActivity: tourActivity),
+        builder: (context) => EditTourActivityPage(
+            database: database, tourActivity: tourActivity),
         fullscreenDialog: true,
       ),
     );
@@ -35,6 +39,8 @@ class _EditTourActivityPageState extends State<EditTourActivityPage> {
   final _formKey = GlobalKey<FormState>();
   String _activityName;
   String _activityDescription;
+  File _image;
+  String _uploadedFileURL;
 
   @override
   void initState() {
@@ -58,9 +64,11 @@ class _EditTourActivityPageState extends State<EditTourActivityPage> {
     //TODO : validate and save form
     if (_validateAndSaveForm()) {
       try {
-        final tourActivities = await widget.database.tourActivitiesStream().first;
-        final allTourActivitiesNames =
-        tourActivities.map((tourActivity) => tourActivity.activityName).toList();
+        final tourActivities =
+            await widget.database.tourActivitiesStream().first;
+        final allTourActivitiesNames = tourActivities
+            .map((tourActivity) => tourActivity.activityName)
+            .toList();
         if (widget.tourActivity != null) {
           allTourActivitiesNames.remove(widget.tourActivity.activityName);
         }
@@ -71,8 +79,8 @@ class _EditTourActivityPageState extends State<EditTourActivityPage> {
             defaultActionText: 'OK',
           ).show(context);
         } else {
-          final tourActivityId =
-              widget.tourActivity?.tourActivityId ?? documentIdFromCurrentDate();
+          final tourActivityId = widget.tourActivity?.tourActivityId ??
+              documentIdFromCurrentDate();
           final tourActivity = TourActivity(
               tourActivityId: tourActivityId,
               activityName: _activityName,
@@ -116,11 +124,70 @@ class _EditTourActivityPageState extends State<EditTourActivityPage> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: _buildForm(),
-          ),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'General Info',
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                  color: Colors.black54),
+            ),
+            SizedBox(height: 12.0),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _buildForm(),
+              ),
+            ),
+            SizedBox(height: 12.0),
+            Text(
+              'Photo',
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                  color: Colors.black54),
+            ),
+            SizedBox(height: 12.0),
+            Wrap(
+                children: <Widget>[
+            _image == null
+                ? RaisedButton(
+                    child: Text('Choose Photo'),
+                    onPressed: chooseFile,
+                    color: Colors.lightGreen,
+                  )
+                : Container(),
+            _image != null
+                ? RaisedButton(
+              child: Text('Upload Photo'),
+              onPressed: uploadFile,
+              color: Colors.lightGreen,
+            )
+                : Container(),
+                  _image != null
+                      ? RaisedButton(
+                    child: Text('Clear Selection'),
+                    onPressed: clearSelection,
+                  )
+                      : Container(),
+                ],  ),
+            _image != null ? Image.file(_image, height: 200,) : Container(),
+
+
+//            _uploadedFileURL != null
+//                ? Image.network(
+//                    _uploadedFileURL,
+//                    height: 150,
+//                  )
+//                : Container(),
+          ],
         ),
       ),
     );
@@ -148,9 +215,38 @@ class _EditTourActivityPageState extends State<EditTourActivityPage> {
         decoration: InputDecoration(labelText: 'Description'),
         initialValue: _activityDescription,
         onSaved: (value) => _activityDescription = value,
-        validator: (value) => value.isNotEmpty ? null : 'Description cant\'t be empty',
+        validator: (value) =>
+            value.isNotEmpty ? null : 'Description cant\'t be empty',
       ),
-
     ];
+  }
+
+  Future chooseFile() async {
+    await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+      setState(() {
+        _image = image;
+      });
+    });
+  }
+
+  Future uploadFile() async {
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('tourActivities/${Path.basename(_image.path)}}');
+    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        _uploadedFileURL = fileURL;
+      });
+    });
+  }
+
+  void clearSelection() {
+    setState(() {
+      _image = null;
+      _uploadedFileURL = null;
+    });
   }
 }

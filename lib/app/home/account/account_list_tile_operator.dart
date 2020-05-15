@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:setiuwetlandstourbooking/app/models/resort.dart';
+import 'package:setiuwetlandstourbooking/app/models/user_info.dart';
 
-class ResortListTile extends StatelessWidget {
-  const ResortListTile({Key key, @required this.resort, this.onTap})
-      : super(key: key);
-  final Resort resort;
+class AccountListTileOperator extends StatelessWidget {
+  const AccountListTileOperator({Key key, @required this.userInfo, this.onTap}):super(key:key);
+  final UserInfo userInfo;
   final VoidCallback onTap;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,36 +31,39 @@ class ResortListTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
-          children: <Widget>[
-            Text(resort.resortName,
-                style: TextStyle(fontSize: 18.0, color: Colors.black87)),
-  ]),
+            children: <Widget>[
+              Text(userInfo.userName,
+                  style: TextStyle(fontSize: 18.0, color: Colors.black87)),
+
+            ]),
+//        SizedBox(height: 8),
         Row(children: <Widget>[
-          Text(resort.resortType, style: TextStyle(fontSize: 16.0)),
+          Text(userInfo.email, style: TextStyle(fontSize: 16.0)),
         ]),
         Row(children: <Widget>[
-          Text(
-            resort.resortDescription,
+          Text('0'+
+              (userInfo.userPhone).toString(),
             style: TextStyle(fontSize: 16.0, color: Colors.grey),
           ),
         ],
         ),
-            Row(children: <Widget>[
-            Text(
-              resort.resortAddress,
-              style: TextStyle(fontSize: 16.0, color: Colors.black54),
-            ),
-          ],
-        ),
         Row(children: <Widget>[
           Text(
-            resort.resortTel,
+            userInfo.userGender,
             style: TextStyle(fontSize: 16.0, color: Colors.black54),
           ),
         ],
         ),
+//        Row(children: <Widget>[
+//          Text(
+//            tourPackage.tourDiscount +'% Discount',
+//            style: TextStyle(fontSize: 16.0, color: Colors.green),
+//          ),
+//        ],
+
 
       ],
     );
+
   }
 }

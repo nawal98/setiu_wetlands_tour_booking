@@ -12,21 +12,18 @@ import 'package:setiuwetlandstourbooking/services/auth.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dart';
 
-class TourPackageAdmin extends StatelessWidget {
-//  List<String> events = ["Tour Package", "Tour Activity", "Resort", "Staff"];
+    class TourPackageAdmin extends StatelessWidget {
 
-
-
-  @override
-  Widget build(BuildContext context) {
+    @override
+    Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("List of Tour Package"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add, color: Colors.black),
-            onPressed: () => EditTourPackagePage.show(
-              context, database: Provider.of<Database>(context),
+    appBar: AppBar(
+    title: Text("List of Tour Package"),
+    actions: <Widget>[
+    IconButton(
+    icon: Icon(Icons.add, color: Colors.black),
+    onPressed: () => EditTourPackagePage.show(
+    context, database: Provider.of<Database>(context),
             ),
           ),
         ],

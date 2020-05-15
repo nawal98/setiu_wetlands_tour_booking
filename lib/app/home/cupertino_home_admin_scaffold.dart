@@ -23,7 +23,7 @@ class CupertinoHomeScaffold extends StatelessWidget {
           _buildItem(TabItem.tourPackages),
           _buildItem(TabItem.tourActivities),
           _buildItem(TabItem.resorts),
-          _buildItem(TabItem.account),
+//          _buildItem(TabItem.account),
 
         ],
         onTap: (index) => onSelectTab(TabItem.values[index]),

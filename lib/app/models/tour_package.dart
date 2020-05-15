@@ -13,24 +13,24 @@ class TourPackage {
 
   final String tourPackageId;
   final String tourName;
-  final String durationPerHour;
+  final int durationPerHour;
   final String tourDescription;
-  final String tourAdultAmount;
+  final int tourAdultAmount;
   final int tourChildAmount;
   final int tourInfantAmount;
-  final String tourDiscount;
+  final int tourDiscount;
 
   factory TourPackage.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
       return null;
     }
     final String tourName = data['tourName'];
-    final String durationPerHour = data['durationPerHour'];
+    final int durationPerHour = data['durationPerHour'];
     final String tourDescription = data['tourDescription'];
-    final String tourAdultAmount = data['tourAdultAmount'];
+    final int tourAdultAmount = data['tourAdultAmount'];
     final int tourChildAmount = data['tourChildAmount'];
     final int tourInfantAmount = data['tourInfantAmount'];
-    final String tourDiscount = data['tourDiscount'];
+    final int tourDiscount = data['tourDiscount'];
     return TourPackage(
       tourPackageId: documentId,
       tourName: tourName,

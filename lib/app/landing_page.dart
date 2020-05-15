@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:setiuwetlandstourbooking/app/home/homepage.dart';
+import 'package:setiuwetlandstourbooking/app/home/homepage_admin.dart';
+import 'package:setiuwetlandstourbooking/app/home/homepage_customer.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_activities/tour_activity_admin_page.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/tour_package_admin_page.dart';
 import 'package:setiuwetlandstourbooking/app/sign_in/sign_in_page.dart';
@@ -18,13 +19,16 @@ class LandingPage extends StatelessWidget {
       stream: auth.onAuthStateChanged,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          User users = snapshot.data;
-          if (users == null) {
+          User user = snapshot.data;
+          if (user == null) {
             return SignInPage.create(context);
           }
-          return Provider<Database>(
-            create: (_) => FirestoreDatabase(uid: users.uid),
-            child: Homepage(),
+          return Provider<User>.value(
+            value:user,
+            child: Provider<Database>(
+              create: (_) => FirestoreDatabase(uid: user.uid),
+              child: HomepageCustomer(),
+            ),
           );
         } else {
           return Scaffold(

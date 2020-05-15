@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:setiuwetlandstourbooking/app/home/resort_rooms/RoomDetail.dart';
 //import 'package:setiuwetlandstourbooking/app/home/resort_rooms/format.dart';
 import 'package:setiuwetlandstourbooking/app/models/room.dart';
 import 'package:setiuwetlandstourbooking/app/models/resort.dart';
@@ -17,7 +18,19 @@ class RoomListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RoomDetail(),
+            // Pass the arguments as part of the RouteSettings. The
+            // DetailScreen reads the arguments from these settings.
+            settings: RouteSettings(
+              arguments: room,
+            ),
+          ),
+        );
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Row(
@@ -38,24 +51,24 @@ class RoomListItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(children: <Widget>[
-          Text(room.roomNo, style: TextStyle(fontSize: 18.0, color: Colors.grey)),
+//          Text(room.roomNo, style: TextStyle(fontSize: 18.0, color: Colors.grey)),
           SizedBox(width: 15.0),
           Text(room.bedType, style: TextStyle(fontSize: 18.0)),
 //          if (resort.ratePerHour > 0.0) ...<Widget>[
             Expanded(child: Container()),
-            Text(
-              room.roomStatus,
+            Text('RM'+
+              room.roomPrice,
               style: TextStyle(fontSize: 16.0, color: Colors.green[700]),
             ),
           ],
         ),
-        Row(children: <Widget>[
-          Text('', style: TextStyle(fontSize: 16.0)),
-          SizedBox(width: 45.0),
-          Text("RM "+room.roomPrice, style: TextStyle(fontSize: 16.0)),
-
-
-        ]),
+//        Row(children: <Widget>[
+//          Text('', style: TextStyle(fontSize: 16.0)),
+//          SizedBox(width: 45.0),
+//          Text("RM "+room.roomPrice, style: TextStyle(fontSize: 16.0)),
+//
+//
+//        ]),
 
       ],
     );

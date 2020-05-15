@@ -15,4 +15,12 @@ class APIPath {
   static String room(String uid, String roomid) =>
       'users/$uid/rooms/$roomid';
   static String rooms(String uid) => 'users/$uid/rooms';
+
+  static String userInfo(String uid, String userid) =>
+      'users/$uid/userInfos/$userid';
+  static String userInfos(String uid) => 'users/$uid/userInfos';
+
+  static String booking(String uid, String bookingid) =>
+      'users/$uid/bookings/$bookingid';
+  static String bookings(String uid) => 'users/$uid/bookings';
 }
