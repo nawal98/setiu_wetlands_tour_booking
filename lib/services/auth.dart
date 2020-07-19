@@ -10,17 +10,35 @@ class User {
     @required this.photoUrl,
     @required this.displayName,
     @required this.email,
+    @required this.userRole,
+    @required this.phoneNumber,
 
-//    @required this.userPhone,
+
   });
   final String uid;
   final String photoUrl;
   final String displayName;
   final String email;
+final String userRole;
+  final String phoneNumber;
 
-//  final String userGender;
-//  final int userPhone;
+  User.fromData(Map<String, dynamic> data, this.photoUrl)
+      : uid = data['uid'],
+        displayName = data['displayName'],
+        email = data['email'],
+        userRole = data['userRole'],
+  phoneNumber = data['phoneNumber'];
+  Map<String, dynamic> toJson() {
+    return {
+      'uid': uid,
+      'displayName': displayName,
+      'email': email,
+      'userRole': userRole,
+      'phoneNumber': phoneNumber,
+    };
+  }
 }
+
 
 abstract class AuthBase {
   Stream<User> get onAuthStateChanged;
@@ -44,12 +62,10 @@ class Auth implements AuthBase {
       displayName: user.displayName,
       photoUrl: user.photoUrl,
       email: user.email,
-
-
-
-
+      phoneNumber: user.phoneNumber,
     );
   }
+
 
   @override
   Stream<User> get onAuthStateChanged {

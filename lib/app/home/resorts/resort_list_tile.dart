@@ -15,10 +15,8 @@ class ResortListTile extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Row(
           children: <Widget>[
-            Expanded(
-              child: _buildContents(context),
-            ),
-//            Icon(Icons.chevron_right, color: Colors.black),
+            _buildContents(context),
+            Icon(Icons.chevron_right, color: Colors.black),
           ],
         ),
       ),
@@ -26,40 +24,29 @@ class ResortListTile extends StatelessWidget {
   }
 
   Widget _buildContents(BuildContext context) {
-    return Column(
+    return Flexible(
+        child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text(resort.resortName,
-                style: TextStyle(fontSize: 18.0, color: Colors.black87)),
-  ]),
         Row(children: <Widget>[
-          Text(resort.resortType, style: TextStyle(fontSize: 16.0)),
+          Text(resort.resortName,
+              style: TextStyle(fontSize: 18.0, color: Colors.black87)),
         ]),
         Row(children: <Widget>[
-          Text(
-            resort.resortDescription,
-            style: TextStyle(fontSize: 16.0, color: Colors.grey),
-          ),
-        ],
-        ),
-            Row(children: <Widget>[
-            Text(
-              resort.resortAddress,
+           Text(resort.resortAddress+', ' + resort.postcode+ ', Setiu, Terengganu, Malaysia',
+                overflow: TextOverflow.fade,
+                maxLines: 1,
+                softWrap: false,
+                style: TextStyle(fontSize: 12.0, color: Colors.black54)),
+   ]),
+        Row(
+          children: <Widget>[
+            Text('+0'+ resort.resortTel.toString(),
               style: TextStyle(fontSize: 16.0, color: Colors.black54),
             ),
           ],
         ),
-        Row(children: <Widget>[
-          Text(
-            resort.resortTel,
-            style: TextStyle(fontSize: 16.0, color: Colors.black54),
-          ),
-        ],
-        ),
-
       ],
-    );
+    ));
   }
 }

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:setiuwetlandstourbooking/app/home/resort_rooms/RoomDetail.dart';
-//import 'package:setiuwetlandstourbooking/app/home/resort_rooms/format.dart';
 import 'package:setiuwetlandstourbooking/app/models/room.dart';
 import 'package:setiuwetlandstourbooking/app/models/resort.dart';
 
-class RoomListItem extends StatelessWidget {
-  const RoomListItem({
+class RoomCustomerListItem extends StatelessWidget {
+  const RoomCustomerListItem({
     @required this.room,
     @required this.resort,
     @required this.onTap,
@@ -22,7 +21,7 @@ class RoomListItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RoomDetail(),
+            builder: (context) =>  RoomDetail(),
             // Pass the arguments as part of the RouteSettings. The
             // DetailScreen reads the arguments from these settings.
             settings: RouteSettings(
@@ -46,37 +45,42 @@ class RoomListItem extends StatelessWidget {
   }
 
   Widget _buildContents(BuildContext context) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(children: <Widget>[
-//          Text(room.roomNo, style: TextStyle(fontSize: 18.0, color: Colors.grey)),
-          SizedBox(width: 15.0),
-          Text(room.bedType, style: TextStyle(fontSize: 18.0)),
-//          if (resort.ratePerHour > 0.0) ...<Widget>[
+        Row(
+          children: <Widget>[
+//            SizedBox(width: 15.0),
+            Text(room.roomType, style: TextStyle(fontSize: 18.0)),
             Expanded(child: Container()),
-            Text('RM'+
-              room.roomPrice,
+            Text(
+              'RM' + room.roomPrice.toString(),
               style: TextStyle(fontSize: 16.0, color: Colors.green[700]),
             ),
           ],
         ),
-//        Row(children: <Widget>[
-//          Text('', style: TextStyle(fontSize: 16.0)),
-//          SizedBox(width: 45.0),
-//          Text("RM "+room.roomPrice, style: TextStyle(fontSize: 16.0)),
-//
-//
-//        ]),
+        Row(
+          children: <Widget>[
+//            SizedBox(width: 15.0),
+            Text(room.bedType+ ' * For ' + room.person.toString()+' person', style: TextStyle(fontSize: 15.0, color: Colors.black54)),
+            Expanded(child: Container()),
 
+          ],
+        ),
+        Row(
+          children: <Widget>[
+//            SizedBox(width: 15.0),
+            Text(room.roomUnit.toString() + ' units available', style: TextStyle(fontSize: 15.0, color: Colors.black54)),
+
+          ],
+        ),
       ],
     );
   }
 }
 
-class DismissibleRoomListItem extends StatelessWidget {
-  const DismissibleRoomListItem({
+class DismissibleCustomerRoomListItem extends StatelessWidget {
+  const DismissibleCustomerRoomListItem({
     this.key,
     this.room,
     this.resort,
@@ -95,31 +99,29 @@ class DismissibleRoomListItem extends StatelessWidget {
     return Dismissible(
       background: Container(color: Colors.red),
       key: key,
-      direction: DismissDirection.endToStart, confirmDismiss:
-        (DismissDirection direction) async {
-      return await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Confirm Delete"),
-            content: const Text(
-                "Are you sure you wish to delete this room?"),
-            actions: <Widget>[
-              FlatButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text("DELETE")),
-              FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text("CANCEL"),
-              ),
-            ],
-          );
-        },
-      );
-    },
+      direction: DismissDirection.endToStart,
+      confirmDismiss: (DismissDirection direction) async {
+        return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Confirm Delete"),
+              content: const Text("Are you sure you wish to delete this room?"),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text("DELETE")),
+                FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text("CANCEL"),
+                ),
+              ],
+            );
+          },
+        );
+      },
       onDismissed: (direction) => onDismissed(),
-      child: RoomListItem(
-
+      child: RoomCustomerListItem(
         room: room,
         resort: resort,
         onTap: onTap,

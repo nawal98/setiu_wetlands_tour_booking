@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:setiuwetlandstourbooking/app/home/resort_rooms/resort_rooms_customer_page.dart';
 import 'package:setiuwetlandstourbooking/app/models/resort.dart';
-import 'package:setiuwetlandstourbooking/plugins/firetop/storage/fire_storage_service.dart';
+
 
 class ResortDetail extends StatelessWidget {
   String get image => null;
@@ -17,33 +17,9 @@ class ResortDetail extends StatelessWidget {
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-//             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      FutureBuilder(
-                        future: _getImage(context, image),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done)
-                            return Container(
-                              height: MediaQuery.of(context).size.height / 2.5,
-                              width: MediaQuery.of(context).size.width / 1.25,
-                              child: snapshot.data,
-                            );
-
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return Container(
-                                height:
-                                    MediaQuery.of(context).size.height / 1.1,
-                                width: MediaQuery.of(context).size.width / 1.25,
-                                child: CircularProgressIndicator());
-
-                          return Container();
-                        },
-                      ),
-
-//              loadButton(context),
                       Row(
                         children: <Widget>[
                           SizedBox(
@@ -54,7 +30,7 @@ class ResortDetail extends StatelessWidget {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18.0,
-                                  color: Colors.black54),
+                                  color: Colors.green[900]),
                             ),
                           ),
                           Expanded(child: Container()),
@@ -75,7 +51,7 @@ class ResortDetail extends StatelessWidget {
                               TextStyle(fontSize: 15.0, color: Colors.black54),
                         ),
                       ),
-                      SizedBox(height: 18),
+                      SizedBox(height: 25),
                       Row(children: <Widget>[
 
                         Padding(
@@ -85,7 +61,7 @@ class ResortDetail extends StatelessWidget {
                         SizedBox(
                             width: 260,
                             child:
-                        Text(resort.resortAddress, style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                        Text(resort.resortAddress+', '+ resort.postcode+', Setiu, Terengganu, Malaysia', style: TextStyle(fontSize: 16.0, color: Colors.black54)),
                         ), ]), SizedBox(height: 16),
                       Row(children: <Widget>[
                         Padding(
@@ -93,14 +69,13 @@ class ResortDetail extends StatelessWidget {
                           child: Icon(Icons.phone, color: Colors.lightGreen),
                         ),
 
-                        Text('+'+resort.resortTel, style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                        Text('+0'+resort.resortTel.toString(), style: TextStyle(fontSize: 16.0, color: Colors.black54)),
                       ]),
                       SizedBox(height: 18),
                       ButtonTheme(
                         minWidth: 325.0,
                         child: RaisedButton(
                           onPressed: ()  => ResortRoomsCustomer.show(context, resort),
-
 
                           color: Colors.lightGreen,
                           child: const Text('Check Room Availability',
@@ -113,15 +88,5 @@ class ResortDetail extends StatelessWidget {
                     ]))));
   }
 
-  Future<Widget> _getImage(BuildContext context, String image) async {
-    Image m;
-    await FireStorageService.loadFromStorage(context, image)
-        .then((downloadUrl) {
-      m = Image.network(
-        downloadUrl.toString(),
-        fit: BoxFit.scaleDown,
-      );
-    });
-    return m;
-  }
+  
 }

@@ -33,17 +33,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    final auth = Provider.of<AuthBase>(context);
-//    return StreamBuilder<Customer>(
-//      stream: auth.onAuthStateChanged,
-//      builder: (context, snapshot) {
-//        if (snapshot.connectionState == ConnectionState.active) {
-//          Customer customers = snapshot.data;
-//
-//          return Provider<Database>(
-//            create: (_) => FirestoreDatabase(cust_id: customers.cust_id),
-//            child: TourPackageAdmin(),);
-//        } else {
+
     return Scaffold(
         appBar: AppBar(
           elevation: 2.0,

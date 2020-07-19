@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:setiuwetlandstourbooking/app/home/account/edit_customer_page.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/empty_content.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/list_item_builder.dart';
 import 'package:setiuwetlandstourbooking/app/home/account/account_list_tile_operator.dart';
 import 'package:setiuwetlandstourbooking/app/models/user_info.dart';
 import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
 import 'package:setiuwetlandstourbooking/services/database.dart';
-import 'package:setiuwetlandstourbooking/services/auth.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dart';
 
 class AccountPageOperator extends StatelessWidget {
 
@@ -18,15 +14,8 @@ class AccountPageOperator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("List of Customers"),
-        actions: <Widget>[
-//          IconButton(
-//            icon: Icon(Icons.add, color: Colors.black),
-//            onPressed: () => EditCustomerPage.show(
-//              context, database: Provider.of<Database>(context),
-//            ),
-//          ),
-        ],
+        title: Text("Customers"),
+      
       ),
       body: _buildContents(context),
     );

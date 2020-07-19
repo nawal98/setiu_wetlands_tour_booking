@@ -42,7 +42,9 @@ class ResortCustomerListTile extends StatelessWidget {
         children: <Widget>[
           Row(children: <Widget>[
             Text(resort.resortName,
-                style: TextStyle(fontSize: 18.0, color: Colors.black87)),
+                style: TextStyle(fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green[900])),
           ]),
           Row(children: <Widget>[
             Expanded(
@@ -50,9 +52,20 @@ class ResortCustomerListTile extends StatelessWidget {
                   overflow: TextOverflow.fade,
                   maxLines: 1,
                   softWrap: false,
-                  style: TextStyle(fontSize: 16.0, color: Colors.grey)),
+                  style: TextStyle(fontSize: 16.0, color: Colors.black54)),
             ),
           ]),
+          Row(
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    'Click for more details', textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16.0, color: Colors.grey,),
+                  ),
+
+
+                ),
+              ] ),
         ],
       ),
     );

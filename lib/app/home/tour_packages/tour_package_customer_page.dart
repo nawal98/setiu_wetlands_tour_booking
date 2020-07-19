@@ -9,14 +9,10 @@ import 'package:setiuwetlandstourbooking/app/home/tour_packages/tour_package_lis
 import 'package:setiuwetlandstourbooking/app/models/tour_package.dart';
 import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
 import 'package:setiuwetlandstourbooking/services/database.dart';
-import 'package:setiuwetlandstourbooking/services/auth.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dart';
-import 'package:setiuwetlandstourbooking/app/home/navigationDrawer.dart';
-import 'package:setiuwetlandstourbooking/app/home/pageRoute.dart';
+
 
 class TourPackageCustomer extends StatelessWidget {
-  static const String routeName = '/tourPackage';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +36,7 @@ class TourPackageCustomer extends StatelessWidget {
                   background: Container(),
                   child: TourPackageCustomerListTile(
                     tourPackage: tourPackage,
-//                    onTap: () =>
-//                        EditTourPackagePage.show(context, tourPackage: tourPackage),
+
                   ),
                 ));
       },

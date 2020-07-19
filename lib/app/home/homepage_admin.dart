@@ -5,6 +5,7 @@ import 'package:setiuwetlandstourbooking/app/home/cupertino_home_admin_scaffold.
 import 'package:setiuwetlandstourbooking/app/home/tab_item.dart';
 import 'package:setiuwetlandstourbooking/app/home/resorts/resort_admin_page.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_activities/tour_activity_admin_page.dart';
+import 'package:setiuwetlandstourbooking/app/home/tour_booking/booking_customer_page.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/tour_package_admin_page.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/tour_package_customer_page.dart';
 
@@ -19,17 +20,12 @@ class _HomepageAdminState extends State<HomepageAdmin> {
   final Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
     TabItem.tourPackages: GlobalKey<NavigatorState>(),
     TabItem.resorts: GlobalKey<NavigatorState>(),
-//    TabItem.bookings: GlobalKey<NavigatorState>(),
-    TabItem.tourActivities: GlobalKey<NavigatorState>(),
-//    TabItem.account: GlobalKey<NavigatorState>(),
   };
 
   Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
       TabItem.tourPackages: (_) => TourPackageAdmin(),
       TabItem.resorts: (_) => ResortAdmin(),
-      TabItem.tourActivities: (_) => TourActivityAdmin(),
-//      TabItem.account: (_) => AccountPage(),
     };
   }
 

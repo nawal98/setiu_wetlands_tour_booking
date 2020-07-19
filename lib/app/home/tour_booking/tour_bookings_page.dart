@@ -4,14 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_booking/booking_list_item.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_booking/booking_page.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_packages/edit_tour_package_page.dart';
+import 'package:setiuwetlandstourbooking/app/home/resort_rooms/edit_booking_page.dart';
+import 'package:setiuwetlandstourbooking/app/home/tour_booking/booking_operator_list_item.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/list_item_builder.dart';
 import 'package:setiuwetlandstourbooking/app/models/booking.dart';
 import 'package:setiuwetlandstourbooking/app/models/tour_package.dart';
-import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
 import 'package:setiuwetlandstourbooking/services/database.dart';
 
 class TourBookingsPage extends StatelessWidget {
@@ -22,63 +19,49 @@ class TourBookingsPage extends StatelessWidget {
   static Future<void> show(BuildContext context, TourPackage tourPackage) async {
     final Database database = Provider.of<Database>(context);
     await Navigator.of(context).push(
-      MaterialPageRoute(
+      CupertinoPageRoute(
         fullscreenDialog: false,
         builder: (context) => TourBookingsPage(database: database, tourPackage: tourPackage),
       ),
     );
   }
 
-  Future<void> _deleteBooking(BuildContext context, Booking booking) async {
-    try {
-      await database.deleteBooking(booking);
-    } on PlatformException catch (e) {
-      PlatformExceptionAlertDialog(
-        title: 'Operation failed',
-        exception: e,
-      ).show(context);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-
+    return StreamBuilder<TourPackage>(
+        stream: database.tourPackageStream(tourPackageId: tourPackage.tourPackageId),
+        builder: (context, snapshot) {
+          final tourPackage =snapshot.data;
+          final tourName= tourPackage ?.tourName?? '';
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text(tourPackage.tourName),
+        title: Text(tourPackage.tourName + ' booking'),
         actions: <Widget>[
-          FlatButton(
-            child: Text(
-              'Edit',
-              style: TextStyle(fontSize: 18.0, color: Colors.white),
-            ),
-            onPressed: () => EditTourPackagePage.show(context, tourPackage: tourPackage),
-          ),
         ],
       ),
       body: _buildContent(context, tourPackage),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () =>
-            BookingPage.show(context: context, database: database, tourPackage: tourPackage),
-      ),
+
     );
+        });
+//    );
   }
 
   Widget _buildContent(BuildContext context, TourPackage tourPackage) {
+    final database = Provider.of<Database>(context);
     return StreamBuilder<List<Booking>>(
       stream: database.bookingsStream(tourPackage: tourPackage),
       builder: (context, snapshot) {
         return ListItemBuilder<Booking>(
           snapshot: snapshot,
           itemBuilder: (context, booking) {
-            return DismissibleBookingListItem(
+            return DismissibleBookingOperatorListItem(
               key: Key('booking-${booking.bookingId}'),
               booking: booking,
               tourPackage: tourPackage,
-              onDismissed: () => _deleteBooking(context, booking),
-              onTap: () => BookingPage.show(
+//              onDismissed: () => _deleteBooking(context, booking),
+              onTap: () => EditBookingPage.show(
                 context: context,
                 database: database,
                 tourPackage: tourPackage,
@@ -89,5 +72,5 @@ class TourBookingsPage extends StatelessWidget {
         );
       },
     );
-  }
-}
+  }}
+//}

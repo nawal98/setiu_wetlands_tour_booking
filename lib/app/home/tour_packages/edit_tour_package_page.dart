@@ -34,11 +34,32 @@ class EditTourPackagePage extends StatefulWidget {
 class _EditTourPackagePageState extends State<EditTourPackagePage> {
   final _formKey = GlobalKey<FormState>();
   String _tourName;
-  int _durationPerHour;
   String _tourDescription;
   int _tourAdultAmount;
   int _tourChildAmount;
   int _tourInfantAmount;
+  List<int> _tourDiscountOption = [
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60,
+    65,
+    70,
+    75,
+    80,
+    85,
+    90,
+    95
+  ];
   int _tourDiscount;
 
   @override
@@ -46,7 +67,6 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
     super.initState();
     if (widget.tourPackage != null) {
       _tourName = widget.tourPackage.tourName;
-      _durationPerHour = widget.tourPackage.durationPerHour;
       _tourDescription = widget.tourPackage.tourDescription;
       _tourAdultAmount = widget.tourPackage.tourAdultAmount;
       _tourChildAmount = widget.tourPackage.tourChildAmount;
@@ -76,7 +96,7 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
         }
         if (allTourPackagesNames.contains(_tourName)) {
           PlatformAlertDialog(
-            title: 'Name already used',
+            title: 'Tour Package Name Already Used',
             content: 'Please choose a different tour package name',
             defaultActionText: 'OK',
           ).show(context);
@@ -86,7 +106,6 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
           final tourPackage = TourPackage(
               tourPackageId: tourPackageId,
               tourName: _tourName,
-              durationPerHour: _durationPerHour,
               tourDescription: _tourDescription,
               tourAdultAmount: _tourAdultAmount,
               tourChildAmount: _tourChildAmount,
@@ -129,16 +148,31 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
 
   Widget _buildContents() {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: _buildForm(),
-          ),
-        ),
-      ),
-    );
+        child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'General Info',
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                  color: Colors.black54),
+            ),
+
+            _buildForm()
+//        child: Card(
+//          child: Padding(
+//            padding: const EdgeInsets.all(16.0),
+//            child: _buildForm(),
+//          ),
+//        ),
+          ]),
+    ));
   }
 
   Widget _buildForm() {
@@ -157,25 +191,10 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
         decoration: InputDecoration(labelText: 'Tour Package Name'),
         initialValue: _tourName,
         onSaved: (value) => _tourName = value,
-        validator: (value) => value.isNotEmpty ? null : 'Name cant\'t be empty',
-      ),
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Description'),
-        initialValue: _tourDescription,
-        onSaved: (value) => _tourDescription = value,
         validator: (value) =>
-            value.isNotEmpty ? null : 'Description cant\'t be empty',
+            value.isNotEmpty ? null : 'Tour package name cant\'t be empty',
       ),
-
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Duration Per Hour'),
-        initialValue: _durationPerHour != null ? '$_durationPerHour' : null,
-        keyboardType: TextInputType.numberWithOptions(
-          signed: false,
-          decimal: false,
-        ),
-        onSaved: (value) => _durationPerHour = int.tryParse(value) ?? 0,
-      ),
+      _buildTourDescription(),
       TextFormField(
         decoration: InputDecoration(labelText: 'Adult Price(RM)'),
         initialValue: _tourAdultAmount != null ? '$_tourAdultAmount' : null,
@@ -184,6 +203,8 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
           decimal: false,
         ),
         onSaved: (value) => _tourAdultAmount = int.tryParse(value) ?? 0,
+        validator: (value) =>
+            value.isNotEmpty ? null : 'Adult price cant\'t be empty',
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'Child Price(RM)'),
@@ -193,6 +214,8 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
           decimal: false,
         ),
         onSaved: (value) => _tourChildAmount = int.tryParse(value) ?? 0,
+        validator: (value) =>
+            value.isNotEmpty ? null : 'Child price cant\'t be empty',
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'Infant Price(RM)'),
@@ -202,16 +225,48 @@ class _EditTourPackagePageState extends State<EditTourPackagePage> {
           decimal: false,
         ),
         onSaved: (value) => _tourInfantAmount = int.tryParse(value) ?? 0,
+        validator: (value) =>
+            value.isNotEmpty ? null : 'Infant price cant\'t be empty',
       ),
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Discount(%)'),
-        initialValue: _tourDiscount != null ? '$_tourDiscount' : null,
-        keyboardType: TextInputType.numberWithOptions(
-          signed: false,
-          decimal: false,
-        ),
-        onSaved: (value) => _tourDiscount = int.tryParse(value) ?? 0,
+      SizedBox(height: 15),
+      Text(
+        'Discount(%)',
+        style: TextStyle(fontSize: 12.0, color: Colors.black54),
       ),
+      _buildtourDiscount(),
     ];
+  }
+
+  Widget _buildTourDescription() {
+    return TextField(
+      keyboardType: TextInputType.text,
+      maxLength: 500,
+      controller: TextEditingController(text: _tourDescription),
+      decoration: InputDecoration(
+        labelText: 'Tour Package Description',
+        labelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+      ),
+      style: TextStyle(fontSize: 16.0, color: Colors.black),
+      maxLines: null,
+      onChanged: (tourDescription) => _tourDescription = tourDescription,
+    );
+  }
+
+  Widget _buildtourDiscount() {
+    return DropdownButton(
+//      hint: Text('Please choose a bed type'), // Not necessary for Option 1
+      value: _tourDiscount,
+      onChanged: (newValue) {
+        setState(() {
+          _tourDiscount = newValue;
+        });
+      },
+      items: _tourDiscountOption.map((disc) {
+        return DropdownMenuItem(
+          child: new Text(disc.toString()),
+          value: disc,
+        );
+      }).toList(),
+    );
   }
 }

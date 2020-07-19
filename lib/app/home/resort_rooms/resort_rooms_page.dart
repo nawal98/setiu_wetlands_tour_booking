@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
-import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_list_item.dart';
-import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_page.dart';
+import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_admin_list_item.dart';
+//import 'package:setiuwetlandstourbooking/app/home/resort_rooms/edit_room_page.dart';
 import 'package:setiuwetlandstourbooking/app/home/resorts/edit_resort_page.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/list_item_builder.dart';
 import 'package:setiuwetlandstourbooking/app/models/room.dart';
@@ -61,11 +61,11 @@ class ResortRoomsPage extends StatelessWidget {
                     database: database, resort: resort),
               ),
               IconButton(
-                icon:Icon(Icons.add,color: Colors.black),
-                onPressed: () =>
-                    RoomPage.show(context: context, database: database, resort: resort),
-              ),
-           ],
+//                icon:Icon(Icons.add,color: Colors.black),
+//                onPressed: () =>
+//                    RoomPage.show(context: context, database: database, resort: resort),
+//              ),
+              )],
 
           ),
           body: _buildContent(context, resort),
@@ -86,16 +86,17 @@ class ResortRoomsPage extends StatelessWidget {
               room: room,
               resort: resort,
               onDismissed: () => _deleteRoom(context, room),
-              onTap: () => RoomPage.show(
-                context: context,
-                database: database,
-                resort: resort,
-                room: room,
-              ),
+//              onTap: () => RoomPage.show(
+//                context: context,
+//                database: database,
+//                resort: resort,
+//                room: room,
+//              ),
             );
           },
         );
       },
     );
   }
+
 }

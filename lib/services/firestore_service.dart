@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
-  //dia sorg je boleh tgk and ada
+  //only that person can retrieve
   FirestoreService._();
   static final instance = FirestoreService._();
   Future<void> setData(

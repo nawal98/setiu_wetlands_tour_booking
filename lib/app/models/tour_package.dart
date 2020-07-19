@@ -1,31 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class TourPackage {
   TourPackage(
       {@required this.tourPackageId,
       @required this.tourName,
-      @required this.durationPerHour,
       @required this.tourDescription,
       @required this.tourAdultAmount,
       @required this.tourChildAmount,
       @required this.tourInfantAmount,
-      @required this.tourDiscount});
+      @required this.tourDiscount,
+//      this.reference},
+      });
 
   final String tourPackageId;
   final String tourName;
-  final int durationPerHour;
-  final String tourDescription;
-  final int tourAdultAmount;
-  final int tourChildAmount;
-  final int tourInfantAmount;
-  final int tourDiscount;
+   String tourDescription;
+   int tourAdultAmount;
+   int tourChildAmount;
+   int tourInfantAmount;
+   int tourDiscount;
 
   factory TourPackage.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
       return null;
     }
     final String tourName = data['tourName'];
-    final int durationPerHour = data['durationPerHour'];
     final String tourDescription = data['tourDescription'];
     final int tourAdultAmount = data['tourAdultAmount'];
     final int tourChildAmount = data['tourChildAmount'];
@@ -34,7 +34,6 @@ class TourPackage {
     return TourPackage(
       tourPackageId: documentId,
       tourName: tourName,
-      durationPerHour: durationPerHour,
       tourDescription: tourDescription,
       tourAdultAmount: tourAdultAmount,
       tourChildAmount: tourChildAmount,
@@ -46,7 +45,6 @@ class TourPackage {
   Map<String, dynamic> toMap() {
     return {
       'tourName': tourName,
-      'durationPerHour': durationPerHour,
       'tourDescription': tourDescription,
       'tourAdultAmount': tourAdultAmount,
       'tourChildAmount': tourChildAmount,

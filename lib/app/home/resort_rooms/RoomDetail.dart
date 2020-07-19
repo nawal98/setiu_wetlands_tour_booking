@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:setiuwetlandstourbooking/app/home/resort_rooms/resort_rooms_customer_page.dart';
+import 'package:provider/provider.dart';
+import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_booking.dart';
+import 'package:setiuwetlandstourbooking/app/home/tour_booking/booking_page.dart';
 import 'package:setiuwetlandstourbooking/app/models/room.dart';
-import 'package:setiuwetlandstourbooking/plugins/firetop/storage/fire_storage_service.dart';
+
 import 'package:setiuwetlandstourbooking/app/models/booking.dart';
 import 'package:setiuwetlandstourbooking/services/database.dart';
+
 class RoomDetail extends StatefulWidget {
 
   const RoomDetail(
@@ -33,7 +36,7 @@ class _RoomDetailState extends State<RoomDetail> {
     final Room room = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(
-          title: Text(room.bedType),
+          title: Text(room.roomType),
         ),
         body: SingleChildScrollView(
             child: Padding(
@@ -43,29 +46,6 @@ class _RoomDetailState extends State<RoomDetail> {
 
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      FutureBuilder(
-                        future: _getImage(context, image),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done)
-                            return Container(
-                              height: MediaQuery.of(context).size.height / 2.5,
-                              width: MediaQuery.of(context).size.width / 1.25,
-                              child: snapshot.data,
-                            );
-
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return Container(
-                                height:
-                                MediaQuery.of(context).size.height / 1.1,
-                                width: MediaQuery.of(context).size.width / 1.25,
-                                child: CircularProgressIndicator());
-
-                          return Container();
-                        },
-                      ),
-
-//              loadButton(context),
                       Row(
                         children: <Widget>[
                           SizedBox(
@@ -81,7 +61,7 @@ class _RoomDetailState extends State<RoomDetail> {
                           ),
                           Expanded(child: Container()),
                           Text('RM'+
-                            room.roomPrice,
+                            room.roomPrice.toString(),
                             style: TextStyle(fontSize: 18.0, color: Colors.green[700],fontWeight: FontWeight.bold,),
                           ),
                         ],
@@ -91,106 +71,100 @@ class _RoomDetailState extends State<RoomDetail> {
                       SizedBox(
                         width: 360,
                         child: Text(
-                          room.roomNo,
+                          room.roomDescription,
 //                  textAlign: TextAlign.left,
                           style:
                           TextStyle(fontSize: 15.0, color: Colors.black54),
                         ),
                       ),
                       SizedBox(height: 18),
-            SizedBox(
-              width: 300,
-              child: Text(
-                'Select Rooms',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
-                    color: Colors.black54),
-              ),
-            ),
-            SizedBox(height: 12),
-            Row(
-                children: <Widget>[
-                  SizedBox(width: 10),
-                  SizedBox(
-                    width: 30,
-                    child: FloatingActionButton(
-                      heroTag: "bt7",
-                      onPressed: minusr,
-                      child: new Icon(
-                          const IconData(0xe15b, fontFamily: 'MaterialIcons'),
-                          color: Colors.black),
-                      backgroundColor: Colors.lightGreen,
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  new Text('$_r', style: new TextStyle(fontSize: 15.0)),
-                  SizedBox(width: 10),
-                  SizedBox(
-                      width: 30,
-                      child: FloatingActionButton(
-                        heroTag: "bt8",
-                        onPressed: addr,
-                        child: new Icon(
-                          Icons.add,
-                          color: Colors.black,
+                      Row(children: <Widget>[
+
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.people, color: Colors.lightGreen),
                         ),
-                        backgroundColor: Colors.lightGreen,
-                      )),
-
-//                      Row(children: <Widget>[
-//
-//                        Padding(
-//                          padding: const EdgeInsets.all(8.0),
-//                          child: Icon(Icons.hotel, color: Colors.lightGreen),
-//                        ),
-//                        SizedBox(
-//                          width: 260,
-//                          child:
-//                          Text(room.resortAddress, style: TextStyle(fontSize: 16.0, color: Colors.black54)),
-//                        ), ]), SizedBox(height: 16),
-//                      Row(children: <Widget>[
-//                        Padding(
-//                          padding: const EdgeInsets.all(8.0),
-//                          child: Icon(Icons.phone, color: Colors.lightGreen),
-//                        ),
-//
-//                        Text('+'+resort.resortTel, style: TextStyle(fontSize: 16.0, color: Colors.black54)),
-//                      ]),
-//                      SizedBox(height: 18),
-                ],
-            ),
-
-                      const SizedBox(height: 20),
-
-
-                      ButtonTheme(
-                        minWidth: 325.0,
-                        child: RaisedButton(
-                          onPressed: ()  {},
-
-
-                          color: Colors.lightGreen,
-                          child: const Text('Add to Booking',
-                              style: TextStyle(
-                                fontSize: 16,
-                              )),
+                        SizedBox(
+                          width: 260,
+                          child:
+                          Text('Maximum for '+room.person.toString()+ ' persons only', style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                        ), ]),
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.hotel, color: Colors.lightGreen),
                         ),
-                      ),
+
+                        Text(room.bedType, style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                      ]),
+
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.room, color: Colors.lightGreen),
+                        ),
+
+                        Text(room.roomUnit.toString()+' units available', style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                      ]),
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.opacity, color: Colors.lightGreen),
+                        ),
+
+                        Text(room.roomUnit.toString()+' bathroom', style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                      ]),
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.live_tv, color: Colors.lightGreen),
+                        ),
+
+                        Text(room.television.toString()+' television', style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                      ]),
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.add_box, color: Colors.lightGreen),
+                        ),
+
+                        Text('RM'+room.extraBed.toString() +' / extra mattress', style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                      ]),
+
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.access_time, color: Colors.lightGreen),
+                        ),
+
+                        Text('Check-in: '+room.checkinTime+'/Check-out: '+room.checkoutTime, style: TextStyle(fontSize: 16.0, color: Colors.black54)),
+                      ]),
+
+
+
+                    _buildContent(context, room),
                       SizedBox(height: 50),
                     ]))));
   }
+  Widget _buildContent(BuildContext context, Room room) {
+    final Database database = Provider.of<Database>(context);
 
-  Future<Widget> _getImage(BuildContext context, String image) async {
-    Image m;
-    await FireStorageService.loadFromStorage(context, image)
-        .then((downloadUrl) {
-      m = Image.network(
-        downloadUrl.toString(),
-        fit: BoxFit.scaleDown,
-      );
-    });
-    return m;
+    return ButtonTheme(
+      minWidth: 325.0,
+      child: RaisedButton(
+//                onPressed: ()  => TourBookingsPage.show(context, tourPackage),//list booking
+        onPressed: () =>
+           RoomBooking.show(context: context,database: database,room: room),
+//                onPressed: ()  => BookingDetail(),
+//                  onPressed: () => BookingDetail.show(context, tourPackage),
+//                onPressed: () => _setBookingAndDismiss(context),
+        color: Colors.lightGreen,
+        child: const Text('Add To Booking',
+            style: TextStyle(
+              fontSize: 16,
+            )),
+      ),
+    );
   }
+
 }

@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:setiuwetlandstourbooking/app/home/tour_packages/PackageOperatorDetail.dart';
 import 'package:setiuwetlandstourbooking/app/models/tour_package.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/PackageDetail.dart';
-import 'package:setiuwetlandstourbooking/app/home/pageRoute.dart';
 class TourPackageCustomerListTile extends StatelessWidget {
   const TourPackageCustomerListTile({Key key, @required this.tourPackage, this.onTap}):super(key:key);
   final TourPackage tourPackage;
@@ -14,7 +15,7 @@ class TourPackageCustomerListTile extends StatelessWidget {
       onTap:(){
         Navigator.push(
           context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
             builder: (context) => PackageDetail(),
             // Pass the arguments as part of the RouteSettings. The
             // DetailScreen reads the arguments from these settings.
@@ -43,33 +44,39 @@ class TourPackageCustomerListTile extends StatelessWidget {
         Row(
             children: <Widget>[
               Text(tourPackage.tourName,
-                  style: TextStyle(fontSize: 18.0, color: Colors.black87)),
+                  style: TextStyle(fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[900])),
             ]),
-
         Row(children: <Widget>[
-          Text('RM '+
-              (tourPackage.tourAdultAmount).toString() + 'per Adult',
-            style: TextStyle(fontSize: 16.0, color: Colors.grey),
-          ),
-        ],
-        ),
-        Row(children: <Widget>[
-          Text(
-            (tourPackage.durationPerHour).toString()+'hours',
+          Text('RM ' +
+              (tourPackage.tourAdultAmount).toString() + ' /Adult' + ' + ',
             style: TextStyle(fontSize: 16.0, color: Colors.black54),
           ),
-        ],
-        ),
-        Row(children: <Widget>[
           Text(
-            (tourPackage.tourDiscount).toString() +'% Discount',
-            style: TextStyle(fontSize: 16.0, color: Colors.green),
+              (tourPackage.tourDiscount).toString() + '% Discount',
+            style: TextStyle(fontSize: 16.0, color: Colors.green[700]),
           ),
         ],
+        ),
+
+        Row(
+          children: <Widget>[
+          Center(
+            child: Text(
+              'Click for more details', textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16.0, color: Colors.grey,),
+            ),
 
 
-        ),],
-    );
-
+          ),
+       ] ),
+      ],);
   }
-}
+
+
+
+
+
+
+ }

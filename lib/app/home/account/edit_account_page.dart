@@ -32,18 +32,19 @@ class EditAccountPage extends StatefulWidget {
 
 class _EditAccountPageState extends State<EditAccountPage> {
   final _formKey = GlobalKey<FormState>();
-  String _userName;
+  String _lastName;
+  String _firstName;
   String _email;
-  String _userGender;
   int _userPhone;
-
+  List<String> _gender = ['Male','Female']; // Option 2
+  String _selectedGender; // Option 2
   @override
   void initState() {
     super.initState();
     if (widget.userInfo != null) {
-      _userName = widget.userInfo.userName;
-      _email = widget.userInfo.email;
-      _userGender = widget.userInfo.userGender;
+      _firstName = widget.userInfo.firstName;
+      _lastName = widget.userInfo.lastName;
+      _selectedGender = widget.userInfo.userGender;
       _userPhone = widget.userInfo.userPhone;
     }
   }
@@ -62,23 +63,22 @@ class _EditAccountPageState extends State<EditAccountPage> {
     if (_validateAndSaveForm()) {
       try {
         final userInfos = await widget.database.userInfosStream().first;
-        final allUsersNames = userInfos.map((userInfo) => userInfo.userName).toList();
+        final allUsersNames = userInfos.map((userInfo) => userInfo.firstName).toList();
         if (widget.userInfo != null) {
-          allUsersNames.remove(widget.userInfo.userName);
-        }
-        if (allUsersNames.contains(_userName)) {
+          allUsersNames.remove(widget.userInfo.firstName);
+        }if (allUsersNames.contains(_firstName)) {
           PlatformAlertDialog(
-            title: 'Name already used',
-            content: 'Please choose a different user name',
+            title: 'Tour Package Name Already Used',
+            content: 'Please choose a different tour package name',
             defaultActionText: 'OK',
           ).show(context);
-        } else {
+        }else {
           final userId = widget.userInfo?.userId ?? documentIdFromCurrentDate();
           final userInfo = UserInfo(
             userId: userId ,
-            userName: _userName,
-            email: _email,
-            userGender: _userGender,
+            firstName: _firstName,
+            lastName: _lastName,
+            userGender: _selectedGender,
             userPhone: _userPhone,
           );
           await widget.database.setUserInfo(userInfo);
@@ -98,7 +98,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text(widget.userInfo == null ? 'New Account' : 'Edit Account'),
+        title: Text(widget.userInfo == null ? 'Account' : 'Account'),
         actions: <Widget>[
           FlatButton(
             child: Text(
@@ -118,13 +118,46 @@ class _EditAccountPageState extends State<EditAccountPage> {
     return SingleChildScrollView(
       child: Padding(
         padding : const EdgeInsets.all(16.0),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: _buildForm(),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+        SizedBox(height: 12.0),
+          _buildForm(),
+            SizedBox(height: 12.0),
+            Row(children: <Widget>[
+              SizedBox(
+                width: 120,
+                child: Text(
+                  'Gender',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 15.0,color: Colors.black54),
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child:     DropdownButton(
+                  hint: Text('Please choose a gender'), // Not necessary for Option 1
+                  value: _selectedGender,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedGender = newValue;
+                    });
+                  },
+                  items: _gender.map((gen) {
+                    return DropdownMenuItem(
+                      child: new Text(gen),
+                      value: gen,
+                    );
+                  }).toList(),
+                ),
+              ),
+            ]),
+
+          ] ),
           ),
-        ),
-      ),
+
+
     );
   }
 
@@ -141,24 +174,18 @@ class _EditAccountPageState extends State<EditAccountPage> {
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
-        decoration: InputDecoration(labelText: 'User Name'),
-        initialValue: _userName,
-        onSaved: (value) => _userName = value,
-        validator: (value) => value.isNotEmpty ? null : 'Name cant\'t be empty',
+        decoration: InputDecoration(labelText: 'First Name'),
+        initialValue: _firstName,
+        onSaved: (value) => _firstName = value,
+        validator: (value) => value.isNotEmpty ? null : 'First Name cant\'t be empty',
       ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Email'),
-        initialValue: _email,
-        onSaved: (value) => _email = value,
-        validator: (value) => value.isNotEmpty ? null : 'Email cant\'t be empty',
+        decoration: InputDecoration(labelText: 'Last Name'),
+        initialValue: _lastName,
+        onSaved: (value) => _lastName = value,
+        validator: (value) => value.isNotEmpty ? null : 'Last Name cant\'t be empty',
       ),
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Gender'),
-        initialValue: _userGender,
-        onSaved: (value) => _userGender = value,
-        validator: (value) =>
-            value.isNotEmpty ? null : 'Gender cant\'t be empty',
-      ),
+
       TextFormField(
         decoration: InputDecoration(labelText: 'Phone No.'),
         initialValue: _userPhone != null ? '$_userPhone' : null,
@@ -166,6 +193,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
           signed: false,
           decimal: false,
         ),
+        validator: (value) => value.isNotEmpty ? null : 'Phone Number cant\'t be empty',
         onSaved: (value) => _userPhone = int.tryParse(value) ?? 0,
       ),
     ];

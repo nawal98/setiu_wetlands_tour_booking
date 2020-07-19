@@ -8,7 +8,6 @@ Staff({this.staffid, this.staffrole});
    return <Staff>[
      Staff(staffid: 1, staffrole: 'Tour Admin'),
      Staff(staffid: 2, staffrole: 'Tour Operator'),
-     Staff(staffid: 3, staffrole: 'Tour Manager'),
    ];
 
  }

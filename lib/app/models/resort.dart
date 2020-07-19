@@ -8,6 +8,7 @@ class Resort{
         @required this.resortAddress,
         @required this.resortTel,
         @required this.resortType,
+        @required this.postcode,
 
         });
 
@@ -15,8 +16,9 @@ class Resort{
   final String resortName;
   final String resortDescription;
   final String resortAddress;
-  final String resortTel;
+  final int resortTel;
   final String resortType;
+  final String postcode;
 
 
 
@@ -27,9 +29,9 @@ class Resort{
     final String resortName = data['resortName'];
     final String resortDescription = data['resortDescription'];
     final String resortAddress = data['resortAddress'];
-    final String resortTel = data['resortTel'];
+    final int resortTel = data['resortTel'];
     final String resortType = data['resortType'];
-
+    final String postcode = data['postcode'];
 
     return Resort(
       resortId: documentId,
@@ -38,7 +40,7 @@ class Resort{
       resortAddress: resortAddress,
       resortTel: resortTel,
       resortType: resortType,
-
+      postcode: postcode,
 
     );
   }
@@ -50,7 +52,7 @@ class Resort{
       'resortAddress': resortAddress,
       'resortTel': resortTel,
       'resortType': resortType,
-
+      'postcode': postcode,
 
     };
   }

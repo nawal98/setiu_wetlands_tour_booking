@@ -33,19 +33,14 @@ class TourPackageListTile extends StatelessWidget {
         Row(
             children: <Widget>[
               Text(tourPackage.tourName,
-                  style: TextStyle(fontSize: 18.0, color: Colors.black87)),
+                  style: TextStyle(fontSize: 18.0, color: Colors.green[900])),
             ]),
 
         Row(children: <Widget>[
-          Text('RM '+
-              (tourPackage.tourAdultAmount).toString() + 'per Adult',
-            style: TextStyle(fontSize: 16.0, color: Colors.grey),
-          ),
-        ],
-        ),
-        Row(children: <Widget>[
-          Text(
-            (tourPackage.durationPerHour).toString()+'hours',
+          Text('RM'+
+              (tourPackage.tourAdultAmount).toString() + '/Adult |'+' RM '+
+              (tourPackage.tourChildAmount).toString() + '/Child |'+' RM '+
+              (tourPackage.tourInfantAmount).toString() + '/Infant',
             style: TextStyle(fontSize: 16.0, color: Colors.black54),
           ),
         ],

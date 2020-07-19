@@ -5,7 +5,6 @@ import 'package:setiuwetlandstourbooking/app/sign_in/email_sign_in_change_model.
 import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
 import 'package:setiuwetlandstourbooking/common_widget/form_submit_button.dart';
 import 'package:setiuwetlandstourbooking/services/auth.dart';
-import 'package:setiuwetlandstourbooking/app/sign_in/staff_sign_in_page.dart';
 import 'package:setiuwetlandstourbooking/app/sign_in/staff.dart';
 
 class StaffSignInFormChangeNotifier extends StatefulWidget {
@@ -131,15 +130,6 @@ class _StaffSignInFormChangeNotifierState
         value: 2,
         groupValue: selectedRadioTile,
         title: Text('Operator'),
-        onChanged: (val) {
-          print('Radio Tile pressed $val');
-          setSelectedRadioTile(val);
-        },
-      ),
-      RadioListTile(
-        value: 3,
-        groupValue: selectedRadioTile,
-        title: Text('Manager'),
         onChanged: (val) {
           print('Radio Tile pressed $val');
           setSelectedRadioTile(val);

@@ -7,15 +7,14 @@ import 'package:setiuwetlandstourbooking/app/home/tour_packages/empty_content.da
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/list_item_builder.dart';
 import 'package:setiuwetlandstourbooking/app/home/resorts/resort_list_tile.dart';
 import 'package:setiuwetlandstourbooking/app/models/resort.dart';
+import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dart';
 import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
 import 'package:setiuwetlandstourbooking/services/database.dart';
 import 'package:setiuwetlandstourbooking/services/auth.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dart';
-import 'package:setiuwetlandstourbooking/app/home/navigationDrawer.dart';
 class ResortAdmin extends StatelessWidget {
 
-  static const String routeName = '/resort';
+
   Future<void> _signOut(BuildContext context) async {
     try {
       final auth = Provider.of<AuthBase>(context);
@@ -25,13 +24,25 @@ class ResortAdmin extends StatelessWidget {
     }
   }
 
+  Future<void> _confirmSignOut(BuildContext context) async {
+    final didRequestSignOut = await PlatformAlertDialog(
+      title: 'Logout',
+      content: 'Are you sure that you want to logout?',
+      cancelActionText: 'Cancel',
+      defaultActionText: 'Logout',
+    ).show(context);
+    if (didRequestSignOut == true) {
+      _signOut(context);
+    }
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("List of Resort"),
+        title: Text("List of Resorts"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add, color: Colors.black),
@@ -39,6 +50,15 @@ class ResortAdmin extends StatelessWidget {
               context,
               database: Provider.of<Database>(context),
             ),
+          ),
+          FlatButton(
+            child: Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+            onPressed: () => _confirmSignOut(context),
           ),
 
         ],

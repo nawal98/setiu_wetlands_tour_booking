@@ -11,12 +11,11 @@ import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dar
 import 'package:setiuwetlandstourbooking/services/database.dart';
 import 'package:setiuwetlandstourbooking/app/home/account/edit_account_page.dart';
 import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
-import 'package:setiuwetlandstourbooking/app/home/navigationDrawer.dart';
 import 'edit_account_page.dart';
 
 class AccountPage extends StatelessWidget {
-  get userInfo => null;
-  static const String routeName = '/account';
+
+
   Future<void> _signOut(BuildContext context) async {
     try {
       final auth = Provider.of<AuthBase>(context);
@@ -41,7 +40,7 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-
+    final database = Provider.of<Database>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text("Account"),
@@ -74,17 +73,23 @@ class AccountPage extends StatelessWidget {
         );
   }
 
-  Widget _buildUserInfo(User user) {
+  Widget _buildUserInfo( User user) {
     return Column(
       children: <Widget>[
         Avatar(
           photoUrl: user.photoUrl,
           radius: 50,
         ),
+//        SizedBox(height: 8),
+//        if (user.displayName != null)
+//          Text(
+//            user.displayName,
+//            style: TextStyle(color: Colors.black),
+//          ),
         SizedBox(height: 8),
-        if (user.displayName != null)
+        if (user.email != null)
           Text(
-            user.displayName,
+            user.email,
             style: TextStyle(color: Colors.black),
           ),
 

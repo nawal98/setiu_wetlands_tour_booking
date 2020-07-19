@@ -3,15 +3,17 @@ import 'package:flutter/foundation.dart';
 class UserInfo {
   UserInfo(
       {@required this.userId,
-        @required this.userName,
-        @required this.email,
+        @required this.firstName,
+        @required this.lastName,
+//        @required this.email,
         @required this.userGender,
         @required this.userPhone,
      });
 
   final String userId;
-  final String userName;
-  final String email;
+  final String firstName;
+  final String lastName;
+//  final String email;
   final String userGender;
   final int userPhone;
 
@@ -20,15 +22,17 @@ class UserInfo {
     if (data == null) {
       return null;
     }
-    final String userName = data['userName'];
-    final String email = data['email'];
+    final String firstName = data['firstName'];
+    final String lastName = data['lastName'];
+//    final String email = data['email'];
     final String userGender = data['userGender'];
     final int userPhone = data['userPhone'];
 
     return UserInfo(
       userId: documentId,
-      userName: userName,
-      email: email,
+      firstName: firstName,
+      lastName: lastName,
+//      email: email,
       userGender: userGender,
       userPhone: userPhone,
     );
@@ -36,8 +40,9 @@ class UserInfo {
 
   Map<String, dynamic> toMap() {
     return {
-      'userName': userName,
-      'email': email,
+      'firstName': firstName,
+      'lastName': lastName,
+//      'email': email,
       'userGender': userGender,
       'userPhone': userPhone,
 

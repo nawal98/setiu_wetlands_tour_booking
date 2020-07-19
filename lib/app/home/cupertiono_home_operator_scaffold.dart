@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:setiuwetlandstourbooking/app/home/tab_item.dart';
+import 'package:setiuwetlandstourbooking/app/home/tab_item_operator.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_activities/tour_activity_admin_page.dart';
 
 // what tab you want to present in app
@@ -20,10 +20,9 @@ class CupertinoHomeScaffold extends StatelessWidget {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: [
-          _buildItem(TabItem.tourPackages),
-          _buildItem(TabItem.tourActivities),
-          _buildItem(TabItem.resorts),
+          _buildItem(TabItem.bookings),
           _buildItem(TabItem.account),
+          _buildItem(TabItem.feedbacks),
 
         ],
         onTap: (index) => onSelectTab(TabItem.values[index]),

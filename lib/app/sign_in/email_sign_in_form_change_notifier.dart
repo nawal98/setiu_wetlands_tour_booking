@@ -10,7 +10,8 @@ import 'package:setiuwetlandstourbooking/app/sign_in/staff_sign_in_page.dart';
 class EmailSignInFormChangeNotifier extends StatefulWidget {
   EmailSignInFormChangeNotifier({@required this.model});
   final StaffSignInChangeModel model;
-
+  String _selectedRole = 'Select a User Role';
+  String get selectedRole => _selectedRole;
   static Widget create(BuildContext context) {
     final AuthBase auth = Provider.of<AuthBase>(context);
     return ChangeNotifierProvider<StaffSignInChangeModel>(
@@ -74,6 +75,8 @@ class _EmailSignInFormChangeNotifierState
       SizedBox(height: 8.0),
       _buildPasswordTextField(),
       SizedBox(height: 8.0),
+
+      SizedBox(height: 8.0),
       FormSubmitButton(
         text: model.primaryButtonText,
         onPressed: model.canSubmit ? _submit : null,
@@ -108,7 +111,7 @@ class _EmailSignInFormChangeNotifierState
       focusNode: _emailFocusNode,
       decoration: InputDecoration(
         labelText: 'Email',
-        hintText: 'test@test.com',
+        hintText: 'Enter your email',
         errorText: model.emailErrorText,
         enabled: model.isLoading == false,
       ),

@@ -2,38 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:setiuwetlandstourbooking/app/home/resort_rooms/RoomDetail.dart';
-import 'package:setiuwetlandstourbooking/app/home/resorts/resort_customer_list_tile.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_activities/tour_activity_customer_list_tile.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_packages/edit_tour_package_page.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_packages/empty_content.dart';
+import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_customer_list_item.dart';
 import 'package:setiuwetlandstourbooking/app/home/tour_packages/list_item_builder.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_packages/tour_Package_customer_list_tile.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_packages/tour_package_list_tile.dart';
 import 'package:setiuwetlandstourbooking/app/models/resort.dart';
-import 'package:setiuwetlandstourbooking/app/models/tour_package.dart';
-import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
 import 'package:setiuwetlandstourbooking/services/database.dart';
 import 'package:setiuwetlandstourbooking/services/auth.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:setiuwetlandstourbooking/common_widget/platform_alert_dialog.dart';
-import 'package:setiuwetlandstourbooking/app/home/navigationDrawer.dart';
-import 'package:setiuwetlandstourbooking/app/home/pageRoute.dart';
-import 'package:setiuwetlandstourbooking/app/home/resort_rooms/resort_rooms_page.dart';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
-import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_list_item.dart';
-import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_page.dart';
-import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_list_item.dart';
-import 'package:setiuwetlandstourbooking/app/home/resorts/edit_resort_page.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_packages/list_item_builder.dart';
+import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_admin_list_item.dart';
 import 'package:setiuwetlandstourbooking/app/models/room.dart';
-import 'package:setiuwetlandstourbooking/app/models/resort.dart';
-import 'package:setiuwetlandstourbooking/common_widget/platform_exception_alert_dialog.dart';
-import 'package:setiuwetlandstourbooking/services/database.dart';
 class ResortRoomsCustomer extends StatelessWidget {
   const ResortRoomsCustomer({@required this.database, @required this.resort});
   final Database database;
@@ -77,20 +55,12 @@ class ResortRoomsCustomer extends StatelessWidget {
             snapshot: snapshot,
 
             itemBuilder: (context, room){
-            return DismissibleRoomListItem(
+            return DismissibleCustomerRoomListItem(
             key: Key('room-${room.id}'),
           room: room,
           resort: resort,
-//          onTap: () => RoomDetail.show(
-//            context: context,
-//            database: database,
-//            resort: resort,
-//            room: room,
-//          ),
+              onTap: () => RoomDetail(),
 
-
-//                    onTap: () =>
-//                        EditTourPackagePage.show(context, tourPackage: tourPackage),
 
             );
       },

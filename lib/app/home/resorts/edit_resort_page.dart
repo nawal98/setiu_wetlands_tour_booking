@@ -39,10 +39,26 @@ class _EditResortPageState extends State<EditResortPage> {
   String _resortName;
   String _resortDescription;
   String _resortAddress;
-//  int _resortTel;
-  String _resortTel;
-  String _resortType;
-
+  int _resortTel;
+  List<String> _resortType = [
+    'Beach',
+    'Spa',
+    'Tropical',
+    'Historical',
+    'Vintage'
+  ]; // Option 2
+  String _selectedResortType;
+  List<String> _postcodeOption = [
+    '21010',
+    '21450',
+    '21500',
+    '22100',
+    '22107',
+    '22109',
+    '22110',
+    '22120'
+  ]; // Option 2
+  String _postcode; // Option 2
   @override
   void initState() {
     super.initState();
@@ -51,8 +67,8 @@ class _EditResortPageState extends State<EditResortPage> {
       _resortDescription = widget.resort.resortDescription;
       _resortAddress = widget.resort.resortAddress;
       _resortTel = widget.resort.resortTel;
-      _resortType = widget.resort.resortType;
-
+      _selectedResortType = widget.resort.resortType;
+      _postcode = widget.resort.postcode;
     }
   }
 
@@ -77,7 +93,7 @@ class _EditResortPageState extends State<EditResortPage> {
         }
         if (allResortsNames.contains(_resortName)) {
           PlatformAlertDialog(
-            title: 'Name already used',
+            title: 'Resort name already used',
             content: 'Please choose a different resort name',
             defaultActionText: 'OK',
           ).show(context);
@@ -90,8 +106,8 @@ class _EditResortPageState extends State<EditResortPage> {
             resortDescription: _resortDescription,
             resortAddress: _resortAddress,
             resortTel: _resortTel,
-            resortType: _resortType,
-
+            resortType: _selectedResortType,
+            postcode: _postcode,
           );
           await widget.database.setResort(resort);
           Navigator.of(context).pop();
@@ -130,12 +146,24 @@ class _EditResortPageState extends State<EditResortPage> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: _buildForm(),
-          ),
-        ),
+        child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 12.0),
+              Text(
+                'General Info',
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.black54),
+              ),
+              SizedBox(height: 12.0),
+              _buildForm(),
+              SizedBox(height: 50.0),
+            ]),
       ),
     );
   }
@@ -158,42 +186,92 @@ class _EditResortPageState extends State<EditResortPage> {
         onSaved: (value) => _resortName = value,
         validator: (value) => value.isNotEmpty ? null : 'Name cant\'t be empty',
       ),
+      _buildDescription(),
+      _buildResorType(),
+      _buildAddrDescription(),
+      _buildPostcode(),
+      Row(children: <Widget>[
+        Expanded(child: Container()),
+        Text(
+          'Setiu, Terengganu, Malaysia',
+          style: TextStyle(fontSize: 12.0, color: Colors.black54),
+        ),
+      ]),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Resort Description'),
-        initialValue: _resortDescription,
-        onSaved: (value) => _resortDescription = value,
-        validator: (value) =>
-            value.isNotEmpty ? null : 'Description cant\'t be empty',
+        decoration: InputDecoration(labelText: 'Resort Telephone No'),
+        initialValue: _resortTel != null ? '$_resortTel' : null,
+        keyboardType: TextInputType.numberWithOptions(
+          signed: false,
+          decimal: false,
+        ),
+        onSaved: (value) => _resortTel = int.tryParse(value) ?? 0,
       ),
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Resort Address'),
-        initialValue: _resortAddress,
-        onSaved: (value) => _resortAddress = value,
-        validator: (value) =>
-            value.isNotEmpty ? null : 'Address cant\'t be empty',
-      ),
-//      TextFormField(
-//        decoration: InputDecoration(labelText: 'Resort Telephone No'),
-//        initialValue: _resortTel != null ? '$_resortTel' : null,
-//        keyboardType: TextInputType.numberWithOptions(
-//          signed: false,
-//          decimal: false,
-//        ),
-//        onSaved: (value) => _resortTel = int.tryParse(value) ?? 0,
-//      ),
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Resort Telephone'),
-        initialValue: _resortTel,
-        onSaved: (value) => _resortTel = value,
-        validator: (value) => value.isNotEmpty ? null : 'Type cant\'t be empty',
-      ),
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Resort Type'),
-        initialValue: _resortType,
-        onSaved: (value) => _resortType = value,
-        validator: (value) => value.isNotEmpty ? null : 'Type cant\'t be empty',
-      ),
-
     ];
+  }
+
+  Widget _buildDescription() {
+    return TextField(
+      keyboardType: TextInputType.text,
+      maxLength: 500,
+      controller: TextEditingController(text: _resortDescription),
+      decoration: InputDecoration(
+        labelText: 'Resort Description',
+        labelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+      ),
+      style: TextStyle(fontSize: 16.0, color: Colors.black),
+      maxLines: null,
+      onChanged: (resortDescription) => _resortDescription = resortDescription,
+    );
+  }
+
+  Widget _buildAddrDescription() {
+    return TextField(
+      keyboardType: TextInputType.text,
+      maxLength: 100,
+      controller: TextEditingController(text: _resortAddress),
+      decoration: InputDecoration(
+        labelText: 'Resort Address',
+        labelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+      ),
+      style: TextStyle(fontSize: 16.0, color: Colors.black),
+      maxLines: null,
+      onChanged: (resortAddress) => _resortAddress = resortAddress,
+    );
+  }
+
+  Widget _buildResorType() {
+    return DropdownButton(
+      hint: Text('Please choose a resort type'), // Not necessary for Option 1
+      value: _selectedResortType,
+      onChanged: (newValue) {
+        setState(() {
+          _selectedResortType = newValue;
+        });
+      },
+      items: _resortType.map((resType) {
+        return DropdownMenuItem(
+          child: new Text(resType),
+          value: resType,
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildPostcode() {
+    return DropdownButton(
+      hint: Text('Please choose a postcode'), // Not necessary for Option 1
+      value: _postcode,
+      onChanged: (newValue) {
+        setState(() {
+          _postcode = newValue;
+        });
+      },
+      items: _postcodeOption.map((post) {
+        return DropdownMenuItem(
+          child: new Text(post),
+          value: post,
+        );
+      }).toList(),
+    );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:setiuwetlandstourbooking/app/models/tour_activity.dart';
-import 'package:setiuwetlandstourbooking/app/home/tour_activities/ActivityDetail.dart';
 class TourActivityListTile extends StatelessWidget {
   const TourActivityListTile({Key key, @required this.tourActivity, this.onTap}):super(key:key);
   final TourActivity tourActivity;
@@ -25,6 +24,7 @@ class TourActivityListTile extends StatelessWidget {
   }
 
   Widget _buildContents(BuildContext context) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -35,10 +35,12 @@ class TourActivityListTile extends StatelessWidget {
             ]),
         Row(children: <Widget>[
           Text(tourActivity.activityDescription, style: TextStyle(fontSize: 16.0, color: Colors.grey)),
-        ]),
+        ]
 
 
-      ],
+
+
+    )],
     );
   }
 }

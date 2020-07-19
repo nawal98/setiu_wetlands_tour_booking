@@ -1,103 +1,280 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:setiuwetlandstourbooking/app/home/resort_rooms/resort_rooms_customer_page.dart';
+import 'package:setiuwetlandstourbooking/app/home/resort_rooms/room_booking_option_page.dart';
 import 'package:setiuwetlandstourbooking/app/models/booking.dart';
-import 'package:setiuwetlandstourbooking/app/models/resort.dart';
+import 'package:setiuwetlandstourbooking/app/models/room.dart';
 import 'package:setiuwetlandstourbooking/app/models/tour_package.dart';
-import 'package:setiuwetlandstourbooking/plugins/firetop/storage/fire_storage_service.dart';
-import 'package:intl/intl.dart';
 import 'package:setiuwetlandstourbooking/services/database.dart';
-import 'package:provider/provider.dart';
+import 'package:setiuwetlandstourbooking/app/home/tour_booking/format.dart';
+
 class BookingDetail extends StatelessWidget {
-  const BookingDetail({@required this.database, @required this.tourPackage,@required this.booking});
+  const BookingDetail(
+      {Key key,
+      @required this.database,
+      @required this.tourPackage,
+      @required this.booking,
+      @required this.room,
+})
+      : super(key: key);
   final Database database;
   final TourPackage tourPackage;
   final Booking booking;
-  String get image => null;
+  final Room room;
+
 
   @override
   Widget build(BuildContext context) {
     final Booking booking = ModalRoute.of(context).settings.arguments;
+
+    final dayOfWeek = Format.dayOfWeek(booking.start);
+    final startDate = Format.date(booking.start);
+    final startTime = TimeOfDay.fromDateTime(booking.start).format(context);
+    final endTime = TimeOfDay.fromDateTime(booking.end).format(context);
+
+    final Firestore bf = Firestore.instance;
     return Scaffold(
         appBar: AppBar(
-          title: Text(tourPackage.tourName),
+          title: Text('Booking Details'),
         ),
         body: SingleChildScrollView(
             child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-//             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 250,
+                    child: Text(
+                      booking.tourName,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          color: Colors.black87),
+                    ),
+                  ),
+                ]),
+                SizedBox(height: 15),
 
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      FutureBuilder(
-                        future: _getImage(context, image),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done)
-                            return Container(
-                              height: MediaQuery.of(context).size.height / 2.5,
-                              width: MediaQuery.of(context).size.width / 1.25,
-                              child: snapshot.data,
-                            );
-
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return Container(
-                                height:
-                                    MediaQuery.of(context).size.height / 1.1,
-                                width: MediaQuery.of(context).size.width / 1.25,
-                                child: CircularProgressIndicator());
-
-                          return Container();
-                        },
+                Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 120,
+                      child: Text(
+                        'Tour Date',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 15.0,  fontWeight: FontWeight.bold,color: Colors.black87),
                       ),
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: Text(dayOfWeek + ' ' + startDate,
+                          style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 12),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Tour Time',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: Text('$startTime - $endTime',
+                        style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+                  ),
+                ]),
+                SizedBox(height: 12),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Adult',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: Text(booking.paxAdult.toString(),
+                        style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+                  ),
+                ]),
+                SizedBox(height: 12),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Children',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: Text(booking.paxChild.toString(),
+                        style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+                  ),
+                ]),
+                SizedBox(height: 12),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Infant',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0,  fontWeight: FontWeight.bold,color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: Text(booking.paxInfant.toString(),
+                        style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+                  ),
+                ]),
+                SizedBox(height: 12),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Total Amount',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0,  fontWeight: FontWeight.bold,color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: Text('RM'+booking.totalPrice.toStringAsFixed(2),
+                        style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+                  ),
+                ]),            SizedBox(height: 12),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Tour Status',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0,  fontWeight: FontWeight.bold,color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: Text(booking.bookingStatus,
+//                      child: Text('In Progress',
+                        style: TextStyle(fontSize: 15.0,  color: Colors.black87)),
+                  ),
+                ]),            SizedBox(height: 12),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Tour Status Description',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0,  fontWeight: FontWeight.bold,color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 200,
+                    child: Text(booking.tourStatusDescription,
+//                      child: Text('In Progress',
+                        style: TextStyle(fontSize: 15.0,  color: Colors.black87)),
+                  ),
+                ]),
+                SizedBox(height: 50),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 250,
+                    child: Text(
+                      'Transfer your Payment To:',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 16.0,  fontWeight: FontWeight.bold,color: Colors.black87),
+                    ),
+                  ),
 
-//              loadButton(context),
-                      Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 250,
-                            child: Text(
-                              'General Info',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0,
-                                  color: Colors.black54),
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Text((booking.paxAdult).toString(),
-//                              (DateFormat().format(booking.start),
+                ]),
+                SizedBox(height: 15),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Account Bank',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0,  fontWeight: FontWeight.bold,color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: Text(booking.accBank,
+                        style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+                  ),
+                ]),
+                SizedBox(height: 12),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Account Number',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0,  fontWeight: FontWeight.bold,color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 200,
+                    child: Text( booking.accNo.toString(),
+                        style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+                  ),
 
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.green[700],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 12),
-                      SizedBox(
-                        width: 360,
-                        child: Text(
-                          (booking.paxAdult).toString(),
-//                  textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 15.0, color: Colors.black54),
-                        ),
-                      ),
-                    ]))));
+
+                ]), SizedBox(height: 12),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Reference',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.0,  fontWeight: FontWeight.bold,color: Colors.black87),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 200,
+                    child: Text( 'SetiuBooking'+booking.tourName,
+                        style: TextStyle(fontSize: 15.0, color: Colors.black87)),
+                  ),
+
+
+                ]),
+                SizedBox(height: 15),
+
+                _buildContent(context, room,booking),
+                SizedBox(height: 50),
+
+              ]),
+        )));
+  }
+  Widget _buildContent(BuildContext context, Room room, Booking booking) {
+
+
+    return ButtonTheme(
+      minWidth: 325.0,
+      child: RaisedButton(
+//                onPressed: ()  => TourBookingsPage.show(context, tourPackage),//list booking
+        onPressed: () =>
+           RoomBookListOptionState.show(context, room,booking),
+
+        color: Colors.lightGreen,
+        child: const Text('Get Room Nearby',
+            style: TextStyle(
+              fontSize: 16,
+            )),
+      ),
+    );
   }
 
-  Future<Widget> _getImage(BuildContext context, String image) async {
-    Image m;
-    await FireStorageService.loadFromStorage(context, image)
-        .then((downloadUrl) {
-      m = Image.network(
-        downloadUrl.toString(),
-        fit: BoxFit.scaleDown,
-      );
-    });
-    return m;
-  }
+
 }
